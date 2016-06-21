@@ -1,0 +1,35 @@
+parameters:
+
+services:
+    # HELPER
+    hbm.blitline:
+        class: HBM\HelperBundle\Services\Blitline
+        arguments: ["%hbm.blitline%", "@hbm.s3", "@hbm.hmac", "@router"]
+        calls:
+            - [ setContainer, [ "@service_container" ] ]
+
+    hbm.cleverreach:
+        class: HBM\HelperBundle\Services\CleverReach
+        arguments: ["%hbm.cleverreach%"]
+
+    hbm.hmac:
+        class: HBM\HelperBundle\Services\Hmac
+        calls:
+            - [ setContainer, [ "@service_container" ] ]
+
+    hbm.s3:
+        class: HBM\HelperBundle\Services\S3
+        arguments: ["%hbm.s3%"]
+        calls:
+            - [ setContainer, [ "@service_container" ] ]
+
+    hbm.stringsanitizer:
+        arguments: ["%hbm.stringsanitizer%"]
+        class: HBM\HelperBundle\Services\StringSanitizer
+
+    # TWIG
+    hbm.twig_extension.string_sanitizer:
+        class: HBM\HelperBundle\Twig\StringSanitizerExtension
+        arguments: ["@hbm.stringsanitizer"]
+        tags:
+            - { name: twig.extension }
