@@ -71,6 +71,7 @@ class Configuration implements ConfigurationInterface
         ->end()
         ->arrayNode('stringsanitizer')->addDefaultsIfNotSet()
           ->children()
+            ->scalarNode('sep')->defaultValue('/')->end()
             ->scalarNode('language')->defaultValue('de')->end()
           ->end()
         ->end()

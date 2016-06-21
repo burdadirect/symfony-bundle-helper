@@ -16,7 +16,7 @@ class StringSanitizer
   }
 
   private function sep() {
-    return '/';
+    return $this->config['sep'];
   }
 
   private function lang($lang = NULL) {
@@ -35,14 +35,14 @@ class StringSanitizer
    */
   public function repairHtml($html) {
     $tidy = new \tidy();
-    $htmlTidy = $tidy->repairString($html, array(
+    $htmlTidy = $tidy->repairString($html, [
       'show-body-only' => TRUE,
       'output-xhtml' => TRUE,
       'quote-ampersand' => FALSE,
       'wrap' => FALSE,
       'char-encoding' => 'utf8',
       'newline' => 'CRLF',
-    ), 'UTF8');
+    ], 'UTF8');
 
     return str_replace("\r\n", "\n", trim($htmlTidy));
   }

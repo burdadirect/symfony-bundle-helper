@@ -6,11 +6,11 @@ use HBM\HelperBundle\Entity\Interfaces\CleverReachUser;
 
 class CleverReach {
 
-  /** @var \SoapClient */
-  private $api;
-
   /** @var array */
   private $config;
+
+  /** @var \SoapClient */
+  private $api;
 
   public function __construct($config) {
     $this->config = $config;

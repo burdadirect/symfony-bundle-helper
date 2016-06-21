@@ -10,11 +10,11 @@ class S3
 
   use ContainerAwareTrait;
 
-  /** @var S3Client */
-  private $s3client;
-
   /** @var array */
   private $config;
+
+  /** @var S3Client */
+  private $s3client;
 
   public function __construct($config) {
     $this->config = $config;
@@ -23,10 +23,10 @@ class S3
   public function getClient() {
     if ($this->s3client === NULL) {
       $this->s3client = new S3Client([
-        'credentials' => array(
+        'credentials' => [
           'key' => $this->config['key'],
           'secret' => $this->config['secret'],
-        ),
+        ],
         'region' => $this->config['region'],
         'version' => 'latest',
         //'ACL' => 'public-read',

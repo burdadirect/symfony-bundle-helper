@@ -10,6 +10,9 @@ class Blitline
 
   use ContainerAwareTrait;
 
+  /** @var array */
+  private $config;
+
   /** @var \HBM\HelperBundle\Services\S3 */
   private $s3;
 
@@ -18,9 +21,6 @@ class Blitline
 
   /** @var \Symfony\Component\Routing\Router */
   private $router;
-
-  /** @var array */
-  private $config;
 
   public function __construct($config, S3 $s3, Hmac $hmac, Router $router) {
     $this->config = $config;
@@ -75,7 +75,7 @@ class Blitline
       ]);
     }
 
-    $http_query = http_build_query(array('json' => json_encode($request)));
+    $http_query = http_build_query(['json' => json_encode($request)]);
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, 'http://api.blitline.com/job');
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
