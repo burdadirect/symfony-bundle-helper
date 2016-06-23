@@ -5,7 +5,7 @@ namespace HBM\HelperBundle\Services;
 use Aws\S3\S3Client;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class S3
+class S3Helper
 {
 
   use ContainerAwareTrait;

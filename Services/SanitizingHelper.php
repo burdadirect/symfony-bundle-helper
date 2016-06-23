@@ -5,7 +5,7 @@ namespace HBM\HelperBundle\Services;
 /**
  * Taken from WordPress: wp-includes/formatting.php
  */
-class StringSanitizer
+class SanitizingHelper
 {
 
   /** @var array */
@@ -15,16 +15,16 @@ class StringSanitizer
     $this->config = $config;
   }
 
-  private function sep() {
-    return $this->config['sep'];
-  }
-
   private function lang($lang = NULL) {
     if ($lang === NULL) {
       $lang = $this->config['lang'];
     }
 
     return $lang;
+  }
+
+  private function sep() {
+    return $this->config['sep'];
   }
 
   /**
@@ -102,7 +102,7 @@ class StringSanitizer
    * @return string
    */
   public function normalizeFolderRelative($path) {
-    return $this->ensureSep($path, FALSE, TRUE);
+    return $this->ensureSep($this->unifySep($path), FALSE, TRUE);
   }
 
   /**
@@ -112,7 +112,7 @@ class StringSanitizer
    * @return string
    */
   public function normalizeFolderAbsolute($path) {
-    return $this->ensureSep($path, TRUE, TRUE);
+    return $this->ensureSep($this->unifySep($path), TRUE, TRUE);
   }
 
   /**
@@ -122,7 +122,7 @@ class StringSanitizer
    * @return string
    */
   public function normalizeFileRelative($path) {
-    return $this->ensureSep($path, FALSE, NULL);
+    return $this->ensureSep($this->unifySep($path), FALSE, NULL);
   }
 
   /**
@@ -132,10 +132,20 @@ class StringSanitizer
    * @return string
    */
   public function normalizeFileAbsolute($path) {
-    return $this->ensureSep($path, TRUE, NULL);
+    return $this->ensureSep($this->unifySep($path), TRUE, NULL);
   }
 
   /****************************************************************************/
+
+  /**
+   * Replace windows folder delimiter
+   *
+   * @param $path
+   * @return string
+   */
+  public function unifySep($path) {
+    return str_replace('\\', $this->sep(), $path);
+  }
 
   /**
    * Returns a path where all string parts between the folder separator have been sanitized.
@@ -146,7 +156,7 @@ class StringSanitizer
    * @return string
    */
   public function sanitizePath($path, $case_sensitive = FALSE, $lang = NULL) {
-    $path_parts = explode($this->sep(), $path);
+    $path_parts = explode($this->sep(), $this->unifySep($path));
 
     $sanitized_path_parts = array();
     foreach ($path_parts as $path_part) {

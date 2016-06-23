@@ -69,7 +69,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('local')->defaultValue('./')->end()
           ->end()
         ->end()
-        ->arrayNode('stringsanitizer')->addDefaultsIfNotSet()
+        ->arrayNode('sanitizing')->addDefaultsIfNotSet()
           ->children()
             ->scalarNode('sep')->defaultValue('/')->end()
             ->scalarNode('language')->defaultValue('de')->end()

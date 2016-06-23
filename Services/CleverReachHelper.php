@@ -4,7 +4,7 @@ namespace PBY\CyberclubBundle\Services;
 
 use HBM\HelperBundle\Entity\Interfaces\CleverReachUser;
 
-class CleverReach {
+class CleverReachHelper {
 
   /** @var array */
   private $config;

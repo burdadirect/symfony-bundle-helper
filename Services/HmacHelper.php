@@ -2,7 +2,7 @@
 
 namespace HBM\HelperBundle\Services;
 
-class Hmac
+class HmacHelper
 {
 
   /** @var array */

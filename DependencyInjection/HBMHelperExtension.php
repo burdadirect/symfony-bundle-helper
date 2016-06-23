@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class HBMExtension extends Extension {
+class HBMHelperExtension extends Extension {
 
   /**
    * {@inheritdoc}
@@ -27,15 +27,10 @@ class HBMExtension extends Extension {
     $container->setParameter('hbm.helper.cleverreach', $configToUse['cleverreach']);
     $container->setParameter('hbm.helper.hmac', $configToUse['hmac']);
     $container->setParameter('hbm.helper.s3', $configToUse['s3']);
-    $container->setParameter('hbm.helper.stringsanitizer', $configToUse['stringsanitizer']);
+    $container->setParameter('hbm.helper.sanitizing', $configToUse['sanitizing']);
 
     $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
     $loader->load('services.yml');
-  }
-
-  public function getAlias()
-  {
-    return 'hbm_helper';
   }
 
 }

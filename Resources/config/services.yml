@@ -3,33 +3,32 @@ parameters:
 services:
     # HELPER
     hbm.helper.blitline:
-        class: HBM\HelperBundle\Services\Blitline
+        class: HBM\HelperBundle\Services\BlitlineHelper
         arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]
         calls:
             - [ setContainer, [ "@service_container" ] ]
 
     hbm.helper.cleverreach:
-        class: HBM\HelperBundle\Services\CleverReach
+        class: HBM\HelperBundle\Services\CleverReachHelper
         arguments: ["%hbm.helper.cleverreach%"]
 
     hbm.helper.hmac:
-        class: HBM\HelperBundle\Services\Hmac
-        calls:
-            - [ setContainer, [ "@service_container" ] ]
+        class: HBM\HelperBundle\Services\HmacHelper
+        arguments: ["%hbm.helper.hmac%"]
 
     hbm.helper.s3:
-        class: HBM\HelperBundle\Services\S3
+        class: HBM\HelperBundle\Services\S3Helper
         arguments: ["%hbm.helper.s3%"]
         calls:
             - [ setContainer, [ "@service_container" ] ]
 
-    hbm.helper.stringsanitizer:
-        arguments: ["%hbm.helper.stringsanitizer%"]
-        class: HBM\HelperBundle\Services\StringSanitizer
+    hbm.helper.sanitizing:
+        arguments: ["%hbm.helper.sanitizing%"]
+        class: HBM\HelperBundle\Services\SanitizingHelper
 
     # TWIG
-    hbm.twig_extension.string_sanitizer:
-        class: HBM\HelperBundle\Twig\StringSanitizerExtension
-        arguments: ["@hbm.helper.stringsanitizer"]
+    hbm.twig_extension.sanitizing:
+        class: HBM\HelperBundle\Twig\SanitizingExtension
+        arguments: ["@hbm.helper.sanitizing"]
         tags:
             - { name: twig.extension }

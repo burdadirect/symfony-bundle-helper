@@ -5,7 +5,7 @@ namespace HBM\HelperBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Routing\Router;
 
-class Blitline
+class BlitlineHelper
 {
 
   use ContainerAwareTrait;
@@ -13,10 +13,10 @@ class Blitline
   /** @var array */
   private $config;
 
-  /** @var \HBM\HelperBundle\Services\S3 */
+  /** @var \HBM\HelperBundle\Services\S3Helper */
   private $s3;
 
-  /** @var \HBM\HelperBundle\Services\Hmac */
+  /** @var \HBM\HelperBundle\Services\HmacHelper */
   private $hmac;
 
   /** @var \Symfony\Component\Routing\Router */

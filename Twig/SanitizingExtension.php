@@ -2,16 +2,17 @@
 
 namespace HBM\HelperBundle\Twig;
 
-use HBM\HelperBundle\Services\StringSanitizer;
+use HBM\HelperBundle\Services\SanitizingHelper;
 
-class SanitizerExtension extends \Twig_Extension
+class SanitizingExtension extends \Twig_Extension
 {
 
-  private $stringSanitizer;
+  /** @var SanitizingHelper */
+  private $sanitizingHelper;
 
-  public function __construct(StringSanitizer $stringSanitizer)
+  public function __construct(SanitizingHelper $sanitizingHelper)
   {
-    $this->stringSanitizer = $stringSanitizer;
+    $this->sanitizingHelper = $sanitizingHelper;
   }
 
   public function getFilters()
@@ -23,7 +24,7 @@ class SanitizerExtension extends \Twig_Extension
 
   public function getName()
   {
-    return 'hbm_twig_extensions_string_sanitizer';
+    return 'hbm_twig_extensions_sanitizing';
   }
 
   /****************************************************************************/
@@ -31,7 +32,7 @@ class SanitizerExtension extends \Twig_Extension
   /****************************************************************************/
 
   public function tidy($html) {
-    return $this->stringSanitizer->repairHtml($html);
+    return $this->sanitizingHelper->repairHtml($html);
   }
 
 }
