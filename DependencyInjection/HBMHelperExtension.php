@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class HBMTwigExtensionsExtension extends Extension {
+class HBMExtension extends Extension {
 
   /**
    * {@inheritdoc}
@@ -21,13 +21,21 @@ class HBMTwigExtensionsExtension extends Extension {
     $configuration = new Configuration();
     $config = $this->processConfiguration($configuration, $configs);
 
-    $container->setParameter('hbm.blitline', $config['blitline']);
-    $container->setParameter('hbm.cleverreach', $config['cleverreach']);
-    $container->setParameter('hbm.hmac', $config['hmac']);
-    $container->setParameter('hbm.s3', $config['s3']);
-    $container->setParameter('hbm.stringsanitizer', $config['hbm.stringsanitizer']);
+    $configToUse = $config;
+
+    $container->setParameter('hbm.helper.blitline', $configToUse['blitline']);
+    $container->setParameter('hbm.helper.cleverreach', $configToUse['cleverreach']);
+    $container->setParameter('hbm.helper.hmac', $configToUse['hmac']);
+    $container->setParameter('hbm.helper.s3', $configToUse['s3']);
+    $container->setParameter('hbm.helper.stringsanitizer', $configToUse['stringsanitizer']);
 
     $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
     $loader->load('services.yml');
   }
+
+  public function getAlias()
+  {
+    return 'hbm_helper';
+  }
+
 }
