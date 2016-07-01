@@ -17,7 +17,7 @@ class SanitizingHelper
 
   private function lang($lang = NULL) {
     if ($lang === NULL) {
-      $lang = $this->config['lang'];
+      $lang = $this->config['language'];
     }
 
     return $lang;
