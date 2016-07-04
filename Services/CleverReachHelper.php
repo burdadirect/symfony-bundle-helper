@@ -1,6 +1,6 @@
 <?php
 
-namespace PBY\CyberclubBundle\Services;
+namespace HBM\HelperBundle\Services;
 
 use HBM\HelperBundle\Entity\Interfaces\CleverReachUser;
 
