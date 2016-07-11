@@ -22,7 +22,7 @@ class BlitlineHelper
   /** @var \Symfony\Component\Routing\Router */
   private $router;
 
-  public function __construct($config, S3 $s3, Hmac $hmac, Router $router) {
+  public function __construct($config, S3Helper $s3, HmacHelper $hmac, Router $router) {
     $this->config = $config;
     $this->s3 = $s3;
     $this->hmac = $hmac;
