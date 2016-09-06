@@ -22,6 +22,15 @@ class Configuration implements ConfigurationInterface
 
     $rootNode
       ->children()
+        ->arrayNode('bitly')->addDefaultsIfNotSet()
+          ->children()
+            ->scalarNode('client_id')->defaultValue('')->end()
+            ->scalarNode('client_secret')->defaultValue('')->end()
+            ->scalarNode('user_login')->defaultValue('')->end()
+            ->scalarNode('user_password')->defaultValue('')->end()
+            ->scalarNode('user_api_key')->defaultValue('')->end()
+          ->end()
+        ->end()
         ->arrayNode('blitline')->addDefaultsIfNotSet()
           ->children()
             ->scalarNode('appid')->defaultValue('')->end()
