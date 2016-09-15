@@ -23,6 +23,7 @@ class HBMHelperExtension extends Extension {
 
     $configToUse = $config;
 
+    $container->setParameter('hbm.helper.bitly', $configToUse['bitly']);
     $container->setParameter('hbm.helper.blitline', $configToUse['blitline']);
     $container->setParameter('hbm.helper.cleverreach', $configToUse['cleverreach']);
     $container->setParameter('hbm.helper.hmac', $configToUse['hmac']);

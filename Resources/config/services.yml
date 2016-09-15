@@ -2,6 +2,10 @@ parameters:
 
 services:
     # HELPER
+    hbm.helper.bitly:
+        class: HBM\HelperBundle\Services\BitlyHelper
+        arguments: ["%hbm.helper.bitly%"]
+
     hbm.helper.blitline:
         class: HBM\HelperBundle\Services\BlitlineHelper
         arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]

@@ -4,12 +4,10 @@ namespace HBM\HelperBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-require_once('./third_party/bitly/bitly.php');
+require_once(__DIR__.'/third_party/bitly/bitly.php');
 
 class BitlyHelper
 {
-
-  use ContainerAwareTrait;
 
   /** @var array */
   private $config;
@@ -21,13 +19,13 @@ class BitlyHelper
     $this->config = $config;
   }
 
-  public function bitly_get($endpoint, $params) {
+  public function get($endpoint, $params) {
     $paramsWithToken = array_merge($params, ['access_token' => $this->getAccessToken()]);
 
     return bitly_get($endpoint, $paramsWithToken);
   }
 
-  public function bitly_post($endpoint, $params) {
+  public function post($endpoint, $params) {
     $paramsWithToken = array_merge($params, ['access_token' => $this->getAccessToken()]);
 
     return bitly_post($endpoint, $paramsWithToken);
