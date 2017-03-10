@@ -9,16 +9,19 @@ class CleverReachHelper {
   /** @var array */
   private $config;
 
-  /** @var \SoapClient */
-  private $api;
-
   public function __construct($config) {
     $this->config = $config;
+  }
 
-    $wsdl_url = "http://api.cleverreach.com/soap/interface_v5.1.php?wsdl";
+  /**
+   * @return null|\SoapClient
+   */
+  public function getClient() {
     try {
-      $this->api = new \SoapClient($wsdl_url);
+      return new \SoapClient('http://api.cleverreach.com/soap/interface_v5.1.php?wsdl');
     } catch (\Exception $e) {}
+
+    return NULL;
   }
 
   /**
@@ -28,6 +31,11 @@ class CleverReachHelper {
    * @return bool
    */
   public function addUser(CleverReachUser $user) {
+    $client = $this->getClient();
+    if ($client === NULL) {
+      return FALSE;
+    }
+
     if ($this->alreadyAdded($user->getEmail())) {
       return true;
     }
@@ -47,7 +55,7 @@ class CleverReachHelper {
       'attributes' => $attributes
     ];
 
-    $result = $this->api->receiverAdd($this->config['apikey'], $this->config['listid'], $data);
+    $result = $client->receiverAdd($this->config['apikey'], $this->config['listid'], $data);
     if (strcmp($result->status, 'SUCCESS') == 0) {
       $doidata = [
         "user_ip" => $_SERVER['REMOTE_ADDR'],
@@ -57,19 +65,30 @@ class CleverReachHelper {
         "info" => $this->config['doi']['info'],
       ];
 
-      $result = $this->api->formsSendActivationMail($this->config['apikey'], $this->config['formid'], $user->getEmail(), $doidata);
+      $result = $client->formsSendActivationMail($this->config['apikey'], $this->config['formid'], $user->getEmail(), $doidata);
     }
 
     return (strcmp($result->status, 'SUCCESS') == 0);
   }
 
   private function alreadyAdded($mail) {
-    $result = $this->api->receiverGetByEmail($this->config['apikey'], $this->config['listid'], $mail, 7);
+    $client = $this->getClient();
+    if ($client === NULL) {
+      return FALSE;
+    }
+
+    $result = $client->receiverGetByEmail($this->config['apikey'], $this->config['listid'], $mail, 7);
+
     return (strcmp($result->status, 'SUCCESS') == 0);
   }
 
   public function receiverDelete($mail, $listId) {
-    $result = $this->api->receiverDelete($this->config['apikey'], $listId, $mail);
+    $client = $this->getClient();
+    if ($client === NULL) {
+      return FALSE;
+    }
+
+    $result = $client->receiverDelete($this->config['apikey'], $listId, $mail);
 
     if ($result->status === 'SUCCESS') {
       return TRUE;
@@ -81,7 +100,12 @@ class CleverReachHelper {
   }
 
   public function receiverSetInactive($mail, $listId) {
-    $result = $this->api->receiverSetInactive($this->config['apikey'], $listId, $mail);
+    $client = $this->getClient();
+    if ($client === NULL) {
+      return FALSE;
+    }
+
+    $result = $client->receiverSetInactive($this->config['apikey'], $listId, $mail);
 
     if ($result->status === 'SUCCESS') {
       return TRUE;
