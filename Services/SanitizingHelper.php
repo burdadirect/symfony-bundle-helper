@@ -69,7 +69,7 @@ class SanitizingHelper
       $path = rtrim($path, $this->sep());
     }
     if ($trailing === TRUE) {
-      $path = $path.$this->sep();
+      $path .= $this->sep();
     }
 
     return $path;

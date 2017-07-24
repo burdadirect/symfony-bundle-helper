@@ -32,7 +32,7 @@ class BlitlineHelper
   public function screenshot($postbackData, $url, $path, $viewport = '1200x800', $delay = 2000) {
     $request = [
       'src' => $url,
-      'src_type' => "screen_shot_url",
+      'src_type' => 'screen_shot_url',
       'src_data' => [
         'viewport' => $viewport,
         'delay' => $delay

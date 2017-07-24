@@ -2,9 +2,7 @@
 
 namespace HBM\HelperBundle\Services;
 
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-
-require_once(__DIR__.'/third_party/bitly/bitly.php');
+require_once __DIR__.'/third_party/bitly/bitly.php';
 
 class BitlyHelper
 {

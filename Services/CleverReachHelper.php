@@ -56,7 +56,7 @@ class CleverReachHelper {
     ];
 
     $result = $client->receiverAdd($this->config['apikey'], $this->config['listid'], $data);
-    if (strcmp($result->status, 'SUCCESS') == 0) {
+    if (strcmp($result->status, 'SUCCESS') === 0) {
       $doidata = [
         "user_ip" => $_SERVER['REMOTE_ADDR'],
         "user_agent" => $_SERVER['HTTP_USER_AGENT'],
@@ -68,7 +68,7 @@ class CleverReachHelper {
       $result = $client->formsSendActivationMail($this->config['apikey'], $this->config['formid'], $user->getEmail(), $doidata);
     }
 
-    return (strcmp($result->status, 'SUCCESS') == 0);
+    return (strcmp($result->status, 'SUCCESS') === 0);
   }
 
   private function alreadyAdded($mail) {
@@ -79,7 +79,7 @@ class CleverReachHelper {
 
     $result = $client->receiverGetByEmail($this->config['apikey'], $this->config['listid'], $mail, 7);
 
-    return (strcmp($result->status, 'SUCCESS') == 0);
+    return (strcmp($result->status, 'SUCCESS') === 0);
   }
 
   public function receiverDelete($mail, $listId) {
