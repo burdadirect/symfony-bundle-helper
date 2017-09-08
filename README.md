@@ -43,7 +43,7 @@ class AppKernel extends Kernel
         $bundles = array(
             // ...
 
-            new HBM\TwigExtensionsBundle\HBMTwigExtensionsBundle(),
+            new HBM\HelperBundle\HBMHelperBundle(),
         );
 
         // ...
@@ -51,43 +51,4 @@ class AppKernel extends Kernel
 
     // ...
 }
-```
-
-### Usage
-
-#### Datetime
-
-```twig
-{{ datetime|datetime_diff(datetime_to_compare) }}
-{{ datetime|datetime_diff(datetime_to_compare, format) }}
-```
-
-#### Filter
-
-```twig
-{{ 'test  test   test'|token }} => ['test', 'test', 'test']
-{{ 1048576|bytes }} => 1024KB
-{{ 1048576|bytes(' ') }} => 1024 KB
-```
-
-#### Object
-
-```twig
-{{ classShort(object) }} => ThisIsTheClassName
-{{ classFull(object) }} => Fully\Qualiefied\Path\ThisIsTheClassName
-{% if object is instanceof('Fully\\Qualiefied\\Path\\ThisIsTheClassName') %} => true|false
-```
-
-#### String
-
-```twig
-{{ uuid() }} => asdfadsfasdfasdf
-{% if someVar is prefixed(['http://', 'https://']) %} => true|false
-```
-
-#### BaseUrl
-
-```twig
-{{ imageUrl|baseurlImages }} => http://this.is.the.baseurl/path/to/image.jpg
-{{ videoUrl|baseurlVideos }} => http://this.is.the.baseurl/path/to/video.mp4
 ```
