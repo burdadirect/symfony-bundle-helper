@@ -1,6 +1,8 @@
 parameters:
 
 services:
+    _defaults: { public: true }
+
     # HELPER
     hbm.helper.bitly:
         class: HBM\HelperBundle\Services\BitlyHelper
