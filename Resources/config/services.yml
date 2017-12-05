@@ -6,6 +6,10 @@ services:
         class: HBM\HelperBundle\Services\BitlyHelper
         arguments: ["%hbm.helper.bitly%"]
 
+    hbm.helper.webshrinker:
+        class: HBM\HelperBundle\Services\WebshrinkerHelper
+        arguments: ["%hbm.helper.webshrinker%"]
+
     hbm.helper.blitline:
         class: HBM\HelperBundle\Services\BlitlineHelper
         arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]
