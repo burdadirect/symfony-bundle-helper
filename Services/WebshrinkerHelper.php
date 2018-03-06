@@ -11,7 +11,7 @@ class WebshrinkerHelper {
     $this->config = $config;
   }
 
-  public function screenshot($url, $path, $options = []) {
+  public function screenshot($url, $path, array $options = [], &$statusCode) {
     $requestUrl = $this->buildRequestUrlScreenshot($url, $options);
 
     $ch = curl_init();
@@ -25,10 +25,10 @@ class WebshrinkerHelper {
       file_put_contents($path, $response);
     }
 
-    return $statusCode;
+    return $response;
   }
 
-  public function info($url, $options = []) {
+  public function info($url, array $options = [], &$statusCode) {
     $requestUrl = $this->buildRequestUrlInfo($url, $options);
 
     $ch = curl_init();
@@ -38,11 +38,7 @@ class WebshrinkerHelper {
     $response = curl_exec($ch);
     $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    if ($statusCode === 200) {
-      return json_decode($response, TRUE);
-    }
-
-    return $statusCode;
+    return json_decode($response, TRUE);
   }
 
   public function statusCodeToError($statusCode) : string {
