@@ -3,10 +3,12 @@
 namespace HBM\HelperBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Router;
 
-class BlitlineHelper
-{
+class BlitlineHelper {
 
   use ContainerAwareTrait;
 
@@ -29,7 +31,20 @@ class BlitlineHelper
     $this->router = $router;
   }
 
-  public function screenshot($postbackData, $url, $path, $viewport = '1200x800', $delay = 2000) {
+  /**
+   * @param $postbackData
+   * @param $url
+   * @param $path
+   * @param string $viewport
+   * @param int $delay
+   *
+   * @return array
+   *
+   * @throws InvalidParameterException
+   * @throws RouteNotFoundException
+   * @throws MissingMandatoryParametersException
+   */
+  public function screenshot($postbackData, $url, $path, $viewport = '1200x800', $delay = 2000) : array {
     $request = [
       'src' => $url,
       'src_type' => 'screen_shot_url',
@@ -66,6 +81,16 @@ class BlitlineHelper
     ];
   }
 
+  /**
+   * @param $postbackData
+   * @param $request
+   *
+   * @return mixed
+   *
+   * @throws InvalidParameterException
+   * @throws RouteNotFoundException
+   * @throws MissingMandatoryParametersException
+   */
   public function process($postbackData, &$request) {
     $request['application_id'] = $this->config['appid'];
     if ($this->config['postback']['url'] && $this->config['postback']['route']) {

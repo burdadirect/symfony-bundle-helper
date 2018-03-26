@@ -16,7 +16,7 @@ class CleverReachHelper {
   /**
    * @return null|\SoapClient
    */
-  public function getClient() {
+  public function getClient() : ?\SoapClient {
     try {
       return new \SoapClient('http://api.cleverreach.com/soap/interface_v5.1.php?wsdl');
     } catch (\Exception $e) {}
@@ -30,14 +30,14 @@ class CleverReachHelper {
    * @param \HBM\HelperBundle\Entity\Interfaces\CleverReachUser $user
    * @return bool
    */
-  public function addUser(CleverReachUser $user) {
+  public function addUser(CleverReachUser $user) : bool {
     $client = $this->getClient();
     if ($client === NULL) {
       return FALSE;
     }
 
     if ($this->alreadyAdded($user->getEmail())) {
-      return true;
+      return TRUE;
     }
 
     $attributes = [];
@@ -58,11 +58,11 @@ class CleverReachHelper {
     $result = $client->receiverAdd($this->config['apikey'], $this->config['listid'], $data);
     if (strcmp($result->status, 'SUCCESS') === 0) {
       $doidata = [
-        "user_ip" => $_SERVER['REMOTE_ADDR'],
-        "user_agent" => $_SERVER['HTTP_USER_AGENT'],
-        "referer" => $_SERVER['HTTP_REFERER'],
-        "postdata" => $this->config['doi']['data'],
-        "info" => $this->config['doi']['info'],
+        'user_ip' => $_SERVER['REMOTE_ADDR'],
+        'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+        'referer' => $_SERVER['HTTP_REFERER'],
+        'postdata' => $this->config['doi']['data'],
+        'info' => $this->config['doi']['info'],
       ];
 
       $result = $client->formsSendActivationMail($this->config['apikey'], $this->config['formid'], $user->getEmail(), $doidata);
@@ -71,7 +71,7 @@ class CleverReachHelper {
     return (strcmp($result->status, 'SUCCESS') === 0);
   }
 
-  private function alreadyAdded($mail) {
+  private function alreadyAdded($mail) : bool {
     $client = $this->getClient();
     if ($client === NULL) {
       return FALSE;
@@ -82,7 +82,7 @@ class CleverReachHelper {
     return (strcmp($result->status, 'SUCCESS') === 0);
   }
 
-  public function receiverDelete($mail, $listId) {
+  public function receiverDelete($mail, $listId) : ?bool {
     $client = $this->getClient();
     if ($client === NULL) {
       return FALSE;
@@ -99,7 +99,7 @@ class CleverReachHelper {
     }
   }
 
-  public function receiverSetInactive($mail, $listId) {
+  public function receiverSetInactive($mail, $listId) : ?bool {
     $client = $this->getClient();
     if ($client === NULL) {
       return FALSE;

@@ -65,15 +65,15 @@ class WebshrinkerHelper {
     return 'n/a';
   }
 
-  private function buildRequestUrlScreenshot($url, $options) {
+  private function buildRequestUrlScreenshot($url, $options) : string {
     return $this->buildRequestUrl('thumbnails/v2/%s?%s', $url, $options);
   }
 
-  private function buildRequestUrlInfo($url, $options) {
+  private function buildRequestUrlInfo($url, $options) : string {
     return $this->buildRequestUrl('thumbnails/v2/%s/info?%s', $url, $options);
   }
 
-  private function buildRequestUrl($requestPath, $url, $options) {
+  private function buildRequestUrl($requestPath, $url, $options) : string {
     $accessKey = $this->config['access_key'];
     $secretKey = $this->config['secret_key'];
 

@@ -29,7 +29,7 @@ class S3Helper
     return $this;
   }
 
-  public function getName($name) {
+  public function getName($name) : string {
     if ($name === NULL) {
       $name = $this->name;
     }
@@ -45,11 +45,18 @@ class S3Helper
     return $this->config[$this->getName($name)] ?? NULL;
   }
 
-  public function getConfigValue($name, $key) {
+  public function getConfigValue($name, $key) : ?string {
     return $this->config[$this->getName($name)][$key] ?? NULL;
   }
 
-  public function getClient($name = NULL) {
+  /**
+   * @param null $name
+   *
+   * @return S3Client
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function getClient($name = NULL) : S3Client {
     if ($this->s3client === NULL) {
       $this->s3client = new S3Client([
         'credentials' => [
@@ -66,7 +73,14 @@ class S3Helper
     return $this->s3client;
   }
 
-  public function getUploadRoot($name = NULL) {
+  /**
+   * @param null $name
+   *
+   * @return null|string
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function getUploadRoot($name = NULL) : ?string {
     if ($this->getConfigValue($name, 'key') && $this->getConfigValue($name, 'secret')) {
       return $this->getUploadRootS3($name);
     }
@@ -74,17 +88,30 @@ class S3Helper
     return $this->getUploadRootLocal($name);
   }
 
-  public function getUploadRootLocal($name = NULL) {
+  public function getUploadRootLocal($name = NULL) : ?string {
     return $this->getConfigValue($name, 'local');
   }
 
-  public function getUploadRootS3($name = NULL) {
+  /**
+   * @param string|null $name
+   *
+   * @return string
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function getUploadRootS3($name = NULL) : string {
     $this->getClient()->registerStreamWrapper();
 
     return 's3://'.$this->getConfigValue($name, 'bucket').'/';
   }
 
-  public function makeFilePublic($path, $name = NULL) {
+  /**
+   * @param $path
+   * @param string|null $name
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function makeFilePublic($path, $name = NULL) : void {
     $this->getClient()->putObjectAcl([
       'Bucket' => $this->getConfigValue($name, 'bucket'),
       'Key'    => $path,
@@ -92,7 +119,13 @@ class S3Helper
     ]);
   }
 
-  public function makeFilePrivate($path, $name = NULL) {
+  /**
+   * @param $path
+   * @param null $name
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function makeFilePrivate($path, $name = NULL) : void {
     $this->getClient()->putObjectAcl([
       'Bucket' => $this->getConfigValue($name, 'bucket'),
       'Key'    => $path,
@@ -100,15 +133,43 @@ class S3Helper
     ]);
   }
 
-  public function getPreSignedUrlForReading($path, $duration = '+20 minutes', $name = NULL) {
+  /**
+   * @param $path
+   * @param string $duration
+   * @param string|null $name
+   *
+   * @return string
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function getPreSignedUrlForReading($path, $duration = '+20 minutes', $name = NULL) : string {
     return $this->getPreSignedUrl($path, 'GetObject', $duration, $name);
   }
 
-  public function getPreSignedUrlForWriting($path, $duration = '+20 minutes', $name = NULL) {
+  /**
+   * @param $path
+   * @param string $duration
+   * @param string|null $name
+   *
+   * @return string
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function getPreSignedUrlForWriting($path, $duration = '+20 minutes', $name = NULL) : string {
     return $this->getPreSignedUrl($path, 'PutObject', $duration, $name);
   }
 
-  public function getPreSignedUrl($path, $action, $duration = '+20 minutes', $name = NULL) {
+  /**
+   * @param $path
+   * @param $action
+   * @param string $duration
+   * @param string|null $name
+   *
+   * @return string
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function getPreSignedUrl($path, $action, $duration = '+20 minutes', $name = NULL) : string {
     $cmd = $this->getClient()->getCommand($action, [
       'Bucket' => $this->getConfigValue($name, 'bucket'),
       'Key'    => $path

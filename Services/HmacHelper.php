@@ -2,8 +2,7 @@
 
 namespace HBM\HelperBundle\Services;
 
-class HmacHelper
-{
+class HmacHelper {
 
   /** @var array */
   private $config;
@@ -12,9 +11,9 @@ class HmacHelper
     $this->config = $config;
   }
 
-  public function sign($varToSign, $secret = NULL) {
+  public function sign($varToSign, $secret = NULL) : string {
     $stringToSign = $varToSign;
-    if (is_array($stringToSign)) {
+    if (\is_array($stringToSign)) {
       $stringToSign = implode("\n", $varToSign)."\n";
     }
 

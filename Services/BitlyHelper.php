@@ -4,8 +4,7 @@ namespace HBM\HelperBundle\Services;
 
 require_once __DIR__.'/third_party/bitly/bitly.php';
 
-class BitlyHelper
-{
+class BitlyHelper {
 
   /** @var array */
   private $config;
@@ -13,11 +12,11 @@ class BitlyHelper
   /** @var array */
   private $accessTokens;
 
-  public function __construct($config) {
+  public function __construct(array $config) {
     $this->config = $config;
   }
 
-  public function getConfig() {
+  public function getConfig() : array {
     return $this->config;
   }
 

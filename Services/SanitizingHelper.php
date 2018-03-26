@@ -5,8 +5,7 @@ namespace HBM\HelperBundle\Services;
 /**
  * Taken from WordPress: wp-includes/formatting.php
  */
-class SanitizingHelper
-{
+class SanitizingHelper {
 
   /** @var array */
   private $config;
@@ -33,7 +32,7 @@ class SanitizingHelper
    * @param string $html
    * @return string
    */
-  public function repairHtml($html) {
+  public function repairHtml($html) : string {
     $tidy = new \tidy();
     $htmlTidy = $tidy->repairString($html, [
       'show-body-only' => TRUE,
@@ -57,7 +56,7 @@ class SanitizingHelper
    * @param null $trailing
    * @return string
    */
-  public function ensureSep($path, $leading = NULL, $trailing = NULL) {
+  public function ensureSep($path, $leading = NULL, $trailing = NULL) : string {
     if ($leading !== NULL) {
       $path = ltrim($path, $this->sep());
     }
@@ -81,7 +80,7 @@ class SanitizingHelper
    * @param string $path
    * @return string
    */
-  public function ensureTrailingSep($path) {
+  public function ensureTrailingSep($path) : string {
     return $this->ensureSep($path, NULL, TRUE);
   }
 
@@ -91,7 +90,7 @@ class SanitizingHelper
    * @param string $path
    * @return string
    */
-  public function ensureLeadingSep($path) {
+  public function ensureLeadingSep($path) : string {
     return $this->ensureSep($path, TRUE, NULL);
   }
 
@@ -101,7 +100,7 @@ class SanitizingHelper
    * @param string $path
    * @return string
    */
-  public function normalizeFolderRelative($path) {
+  public function normalizeFolderRelative($path) : string {
     return $this->ensureSep($this->unifySep($path), FALSE, TRUE);
   }
 
@@ -111,7 +110,7 @@ class SanitizingHelper
    * @param string $path
    * @return string
    */
-  public function normalizeFolderAbsolute($path) {
+  public function normalizeFolderAbsolute($path) : string {
     return $this->ensureSep($this->unifySep($path), TRUE, TRUE);
   }
 
@@ -121,7 +120,7 @@ class SanitizingHelper
    * @param string $path
    * @return string
    */
-  public function normalizeFileRelative($path) {
+  public function normalizeFileRelative($path) : string {
     return $this->ensureSep($this->unifySep($path), FALSE, NULL);
   }
 
@@ -131,7 +130,7 @@ class SanitizingHelper
    * @param string $path
    * @return string
    */
-  public function normalizeFileAbsolute($path) {
+  public function normalizeFileAbsolute($path) : string {
     return $this->ensureSep($this->unifySep($path), TRUE, NULL);
   }
 
@@ -143,7 +142,7 @@ class SanitizingHelper
    * @param $path
    * @return string
    */
-  public function unifySep($path) {
+  public function unifySep($path) : string {
     return str_replace('\\', $this->sep(), $path);
   }
 
@@ -155,14 +154,14 @@ class SanitizingHelper
    * @param string $lang
    * @return string
    */
-  public function sanitizePath($path, $case_sensitive = FALSE, $lang = NULL) {
+  public function sanitizePath($path, $case_sensitive = FALSE, $lang = NULL) : string {
     $path_parts = explode($this->sep(), $this->unifySep($path));
 
     $sanitized_path_parts = array();
     foreach ($path_parts as $path_part) {
       $sanitized_path_part = $this->sanitizeChars($path_part, FALSE, $case_sensitive, $this->lang($lang));
 
-      if (strlen($sanitized_path_part) > 0) {
+      if (\strlen($sanitized_path_part) > 0) {
         $sanitized_path_parts[] = $sanitized_path_part;
       }
     }
@@ -178,7 +177,7 @@ class SanitizingHelper
    * @param string $lang
    * @return string
    */
-  public function sanitizeString($string, $with_slash = FALSE, $case_sensitive = FALSE, $lang = NULL) {
+  public function sanitizeString($string, $with_slash = FALSE, $case_sensitive = FALSE, $lang = NULL) : string {
     return $this->sanitizeChars($string, $with_slash, $case_sensitive, $this->lang($lang));
   }
 
@@ -189,7 +188,7 @@ class SanitizingHelper
    * @param string $lang
    * @return string
    */
-  public function slug($string, $lang = NULL) {
+  public function slug($string, $lang = NULL) : string {
     return $this->sanitizeString($string, FALSE, FALSE, $this->lang($lang));
   }
 
@@ -204,7 +203,7 @@ class SanitizingHelper
    * @param string $lang
    * @return string
    */
-  private function sanitizeChars($string, $with_slash = FALSE, $case_sensitive = FALSE, $lang = NULL) {
+  private function sanitizeChars($string, $with_slash = FALSE, $case_sensitive = FALSE, $lang = NULL) : string {
     $langs = array(
       '@' => array('de' => '-at-',     'en' => '-at-'),
       '&' => array('de' => '-und-',    'en' => '-and-'),
@@ -323,7 +322,7 @@ class SanitizingHelper
 
     $letters = str_split($string);
     foreach ($letters as $key => $value) {
-      if (!in_array($value, $valid_characters)) {
+      if (!\in_array($value, $valid_characters, TRUE)) {
         $letters[$key] = '';
       }
     }
