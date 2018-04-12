@@ -30,18 +30,24 @@ class SanitizingHelper {
    * Repair html.
    *
    * @param string $html
+   * @param array $options
+   *
    * @return string
    */
-  public function repairHtml($html) : string {
-    $tidy = new \tidy();
-    $htmlTidy = $tidy->repairString($html, [
+  public function repairHtml($html, $options = []) : string {
+    $defaultOptions = [
       'show-body-only' => TRUE,
       'output-xhtml' => TRUE,
       'quote-ampersand' => FALSE,
       'wrap' => FALSE,
       'char-encoding' => 'utf8',
       'newline' => 'CRLF',
-    ], 'UTF8');
+    ];
+
+    $mergedOptions = array_merge($defaultOptions, $options);
+
+    $tidy = new \tidy();
+    $htmlTidy = $tidy->repairString($html, $mergedOptions, 'UTF8');
 
     return str_replace("\r\n", "\n", trim($htmlTidy));
   }
