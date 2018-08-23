@@ -8,6 +8,10 @@ services:
         class: HBM\HelperBundle\Services\BitlyHelper
         arguments: ["%hbm.helper.bitly%"]
 
+    hbm.helper.screenshotapi:
+        class: HBM\HelperBundle\Services\ScreenshotApiHelper
+        arguments: ["%hbm.helper.screenshotapi%"]
+
     hbm.helper.webshrinker:
         class: HBM\HelperBundle\Services\WebshrinkerHelper
         arguments: ["%hbm.helper.webshrinker%"]

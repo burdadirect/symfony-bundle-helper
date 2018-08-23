@@ -29,7 +29,8 @@
     "symfony/config": "^3.0|^4.0",
     "symfony/dependency-injection": "^3.0|^4.0",
     "symfony/framework-bundle": "^3.0|^4.0",
-    "aws/aws-sdk-php": "^3.52"
+    "aws/aws-sdk-php": "^3.52",
+    "guzzlehttp/guzzle": "^6.3"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
