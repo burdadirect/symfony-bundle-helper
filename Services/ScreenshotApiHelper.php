@@ -3,6 +3,7 @@
 namespace HBM\HelperBundle\Services;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 class ScreenshotApiHelper {
 
@@ -106,6 +107,7 @@ class ScreenshotApiHelper {
       $options['fullpage'] = FALSE;
     }
 
+    $response = NULL;
     try {
       $response = $this->getClient()->request('POST', 'capture',
         [
@@ -118,11 +120,13 @@ class ScreenshotApiHelper {
         ]
       );
     } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-      $data = [];
-      return NULL;
     }
 
-    $data = json_decode($response->getBody(), TRUE);
+    if ($response instanceof ResponseInterface) {
+      $data = json_decode($response->getBody(), TRUE);
+    } else {
+      $data = [];
+    }
 
     return $response;
   }
@@ -136,6 +140,7 @@ class ScreenshotApiHelper {
   public function retrieve($key, array &$data = NULL) {
     $params = ['key' => $key];
 
+    $response = NULL;
     try {
       $response = $this->getClient()->request('GET', 'retrieve?'.http_build_query($params),
         [
@@ -146,11 +151,13 @@ class ScreenshotApiHelper {
         ]
       );
     } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-      $data = [];
-      return NULL;
     }
 
-    $data = json_decode($response->getBody(), TRUE);
+    if ($response instanceof ResponseInterface) {
+      $data = json_decode($response->getBody(), TRUE);
+    } else {
+      $data = [];
+    }
 
     return $response;
   }
