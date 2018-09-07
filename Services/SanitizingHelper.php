@@ -34,7 +34,7 @@ class SanitizingHelper {
    *
    * @return string
    */
-  public function repairHtml($html, $options = []) : string {
+  public function repairHtml($html, array $options = []) : string {
     $defaultOptions = [
       'show-body-only' => TRUE,
       'output-xhtml' => TRUE,
