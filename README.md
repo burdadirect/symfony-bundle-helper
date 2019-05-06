@@ -1,4 +1,4 @@
-# HBM Twig Extensions Bundle
+# HBM Helper Bundle
 
 ## Status
 
@@ -9,7 +9,7 @@
 ## Team
 
 ### Developers
-Christian Puchinger - puchinger@playboy.de
+Christian Puchinger - christian.puchinger@playboy.de
 
 ## Installation
 
@@ -19,7 +19,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```bash
-$ composer require burdanews/twig-extensions-bundle
+$ composer require burdanews/symfony-bundle-helper
 ```
 
 This command requires you to have Composer installed globally, as explained
@@ -28,27 +28,49 @@ of the Composer documentation.
 
 ### Step 2: Enable the Bundle
 
-Then, enable the bundle by adding it to the list of registered bundles
-in the `app/AppKernel.php` file of your project:
+With Symfony 4 the bundle is enabled automatically for all environments (see `config/bundles.php`). 
 
-```php
-<?php
-// app/AppKernel.php
+### Step 3: Configuration
 
-// ...
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = array(
-            // ...
+```yml
+hbm_helper:
+  bitly:
+    client_id:
+    client_secret:
+    user_login:
+    user_password:
 
-            new HBM\HelperBundle\HBMHelperBundle(),
-        );
+  blitline:
+    appid:
+    postback:
+      url:
+      route:
 
-        // ...
-    }
+  webshrinker:
+    access_key:
+    secret_key:
 
-    // ...
-}
+  screenshotapi:
+    apikey:
+
+  cleverreach:
+    apikey:
+    listid:
+    formid:
+    source:
+    doi:
+      info:
+      data:
+    fields:
+      - {key: , value: }
+
+  hmac:
+    secret:
+
+  s3:
+    - {key: , secret: , bucket: , region: 'eu-central-1', local: './'}
+
+  sanitizing:
+    sep: '/'
+    language: 'de'
 ```
