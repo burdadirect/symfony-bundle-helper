@@ -1,15 +1,11 @@
 {
   "name": "burdanews/helper-bundle",
   "description": "HBM Helper Bundle - StringSanitizer, S3Helper, BlitlineHelper, HmacHelper.",
-  "author" : [{
+  "authors" : [{
     "name" : "Christian Puchinger",
     "email" : "puchinger@burda.com"
   }],
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:burdanews/helper-bundle.git"
-  },
   "type": "symfony-bundle",
   "autoload": {
     "psr-0": {
@@ -26,10 +22,10 @@
     "ext-tidy" : "*",
     "ext-curl" : "*",
     "ext-mbstring": "*",
-    "symfony/config": "^3.0|^4.0",
-    "symfony/dependency-injection": "^3.0|^4.0",
-    "symfony/framework-bundle": "^3.0|^4.0",
-    "symfony/twig-bundle": "^3.0|^4.0",
+    "symfony/config": "^3.4|^4.2",
+    "symfony/dependency-injection": "^3.4|^4.2",
+    "symfony/framework-bundle": "^3.4|^4.2",
+    "symfony/twig-bundle": "^3.4|^4.2",
     "aws/aws-sdk-php": "^3.52",
     "guzzlehttp/guzzle": "^6.3"
   },

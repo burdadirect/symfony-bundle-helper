@@ -1,7 +1,6 @@
-parameters:
-
 services:
-    _defaults: { public: true }
+    _defaults:
+        public: true
 
     # HELPER
     hbm.helper.bitly:
