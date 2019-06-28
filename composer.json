@@ -20,6 +20,7 @@
   "require": {
     "php" : ">=7.1",
     "ext-tidy" : "*",
+    "ext-json" : "*",
     "ext-curl" : "*",
     "ext-mbstring": "*",
     "symfony/config": "^3.4|^4.2",

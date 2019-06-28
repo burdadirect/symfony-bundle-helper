@@ -11,6 +11,10 @@ services:
         class: HBM\HelperBundle\Services\ScreenshotApiHelper
         arguments: ["%hbm.helper.screenshotapi%"]
 
+    hbm.helper.screenshotlayer:
+        class: HBM\HelperBundle\Services\ScreenshotLayerHelper
+        arguments: ["%hbm.helper.screenshotlayer%"]
+
     hbm.helper.webshrinker:
         class: HBM\HelperBundle\Services\WebshrinkerHelper
         arguments: ["%hbm.helper.webshrinker%"]
