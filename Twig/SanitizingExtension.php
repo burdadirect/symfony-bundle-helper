@@ -3,9 +3,10 @@
 namespace HBM\HelperBundle\Twig;
 
 use HBM\HelperBundle\Services\SanitizingHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class SanitizingExtension extends \Twig_Extension
-{
+class SanitizingExtension extends AbstractExtension {
 
   /** @var SanitizingHelper */
   private $sanitizingHelper;
@@ -18,7 +19,7 @@ class SanitizingExtension extends \Twig_Extension
   public function getFilters()
   {
     return array(
-      new \Twig_SimpleFilter('tidy', array($this, 'tidy')),
+      new TwigFilter('tidy', [$this, 'tidy']),
     );
   }
 
