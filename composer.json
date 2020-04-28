@@ -9,12 +9,12 @@
   "type": "symfony-bundle",
   "autoload": {
     "psr-4": {
-      "HBM\\HelperBundle": ""
+      "HBM\\HelperBundle": "HBM/HelperBundle"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "Tests\\HBM\\HelperBundle": "tests/HBM/HelperBundle"
     }
   },
   "require": {
@@ -34,6 +34,5 @@
     "roave/security-advisories": "dev-master",
     "phpunit/phpunit" : "^7.0|^8.0",
     "symfony/phpunit-bridge": "^3.4|^4.4"
-  },
-  "target-dir": "HBM/HelperBundle"
+  }
 }
