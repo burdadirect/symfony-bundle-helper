@@ -11,11 +11,11 @@ class SanitizingHelperTest extends TestCase
   /** @var SanitizingHelper */
   private $sanitizingHelper;
 
-  public function setUp() {
+  public function setUp() : void {
     parent::setUp();
   }
 
-  public function tearDown() {
+  public function tearDown() : void {
     parent::tearDown();
   }
 
