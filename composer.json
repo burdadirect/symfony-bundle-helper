@@ -9,12 +9,12 @@
   "type": "symfony-bundle",
   "autoload": {
     "psr-4": {
-      "HBM\\HelperBundle": "HBM/HelperBundle"
+      "HBM\\HelperBundle\\": "HBM/HelperBundle"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\HBM\\HelperBundle": "tests/HBM/HelperBundle"
+      "Tests\\HBM\\HelperBundle\\": "tests/HBM/HelperBundle"
     }
   },
   "require": {
