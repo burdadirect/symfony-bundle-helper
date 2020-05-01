@@ -5,38 +5,38 @@ services:
     # HELPER - SCREENSHOT
 
     hbm.helper.blitline:
-        class: HBM\HelperBundle\Services\BlitlineHelper
+        class: HBM\HelperBundle\Service\Screenshot\BlitlineHelper
         arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]
 
     hbm.helper.screenshotapi:
-        class: HBM\HelperBundle\Services\ScreenshotApiHelper
+        class: HBM\HelperBundle\Service\Screenshot\ScreenshotApiHelper
         arguments: ["%hbm.helper.screenshotapi%"]
 
     hbm.helper.screenshotlayer:
-        class: HBM\HelperBundle\Services\ScreenshotLayerHelper
+        class: HBM\HelperBundle\Service\Screenshot\ScreenshotLayerHelper
         arguments: ["%hbm.helper.screenshotlayer%"]
 
     hbm.helper.webshrinker:
-        class: HBM\HelperBundle\Services\WebshrinkerHelper
+        class: HBM\HelperBundle\Service\Screenshot\WebshrinkerHelper
         arguments: ["%hbm.helper.webshrinker%"]
 
     # HELPER
 
     hbm.helper.bitly:
-        class: HBM\HelperBundle\Services\BitlyHelper
+        class: HBM\HelperBundle\Service\BitlyHelper
         arguments: ["%hbm.helper.bitly%"]
 
     hbm.helper.hmac:
-        class: HBM\HelperBundle\Services\HmacHelper
+        class: HBM\HelperBundle\Service\HmacHelper
         arguments: ["%hbm.helper.hmac%"]
 
     hbm.helper.s3:
-        class: HBM\HelperBundle\Services\S3Helper
+        class: HBM\HelperBundle\Service\S3Helper
         arguments: ["%hbm.helper.s3%"]
 
     hbm.helper.sanitizing:
         arguments: ["%hbm.helper.sanitizing%"]
-        class: HBM\HelperBundle\Services\SanitizingHelper
+        class: HBM\HelperBundle\Service\SanitizingHelper
 
     # TWIG
     hbm.twig_extension.sanitizing:
