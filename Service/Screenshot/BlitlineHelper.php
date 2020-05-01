@@ -4,15 +4,12 @@ namespace HBM\HelperBundle\Service\Screenshot;
 
 use HBM\HelperBundle\Service\HmacHelper;
 use HBM\HelperBundle\Service\S3Helper;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Router;
 
 class BlitlineHelper {
-
-  use ContainerAwareTrait;
 
   /**
    * @var array

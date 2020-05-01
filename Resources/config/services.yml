@@ -2,10 +2,11 @@ services:
     _defaults:
         public: true
 
-    # HELPER
-    hbm.helper.bitly:
-        class: HBM\HelperBundle\Services\BitlyHelper
-        arguments: ["%hbm.helper.bitly%"]
+    # HELPER - SCREENSHOT
+
+    hbm.helper.blitline:
+        class: HBM\HelperBundle\Services\BlitlineHelper
+        arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]
 
     hbm.helper.screenshotapi:
         class: HBM\HelperBundle\Services\ScreenshotApiHelper
@@ -19,15 +20,11 @@ services:
         class: HBM\HelperBundle\Services\WebshrinkerHelper
         arguments: ["%hbm.helper.webshrinker%"]
 
-    hbm.helper.blitline:
-        class: HBM\HelperBundle\Services\BlitlineHelper
-        arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]
-        calls:
-            - [ setContainer, [ "@service_container" ] ]
+    # HELPER
 
-    hbm.helper.cleverreach:
-        class: HBM\HelperBundle\Services\CleverReachHelper
-        arguments: ["%hbm.helper.cleverreach%"]
+    hbm.helper.bitly:
+        class: HBM\HelperBundle\Services\BitlyHelper
+        arguments: ["%hbm.helper.bitly%"]
 
     hbm.helper.hmac:
         class: HBM\HelperBundle\Services\HmacHelper
@@ -36,8 +33,6 @@ services:
     hbm.helper.s3:
         class: HBM\HelperBundle\Services\S3Helper
         arguments: ["%hbm.helper.s3%"]
-        calls:
-            - [ setContainer, [ "@service_container" ] ]
 
     hbm.helper.sanitizing:
         arguments: ["%hbm.helper.sanitizing%"]
