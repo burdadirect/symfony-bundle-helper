@@ -1,17 +1,32 @@
 <?php
 
-namespace HBM\HelperBundle\Services;
+namespace HBM\HelperBundle\Service\Screenshot;
 
 class WebshrinkerHelper {
 
-  /** @var array */
+  /**
+   * @var array
+   */
   private $config;
 
+  /**
+   * WebshrinkerHelper constructor.
+   *
+   * @param $config
+   */
   public function __construct($config) {
     $this->config = $config;
   }
 
-  public function screenshot($url, $path, array $options = [], &$statusCode) {
+  /**
+   * @param $url
+   * @param $path
+   * @param array $options
+   * @param null $statusCode
+   *
+   * @return bool|string
+   */
+  public function screenshot($url, $path, array $options = [], &$statusCode = NULL) {
     $requestUrl = $this->buildRequestUrlScreenshot($url, $options);
 
     $ch = curl_init();
@@ -28,7 +43,14 @@ class WebshrinkerHelper {
     return $response;
   }
 
-  public function info($url, array $options = [], &$statusCode) {
+  /**
+   * @param $url
+   * @param array $options
+   * @param null $statusCode
+   *
+   * @return mixed
+   */
+  public function info($url, array $options = [], &$statusCode = NULL) {
     $requestUrl = $this->buildRequestUrlInfo($url, $options);
 
     $ch = curl_init();
@@ -41,6 +63,11 @@ class WebshrinkerHelper {
     return json_decode($response, TRUE);
   }
 
+  /**
+   * @param $statusCode
+   *
+   * @return string
+   */
   public function statusCodeToError($statusCode) : string {
     switch($statusCode) {
       case 200:
@@ -65,14 +92,33 @@ class WebshrinkerHelper {
     return 'n/a';
   }
 
+  /**
+   * @param $url
+   * @param $options
+   *
+   * @return string
+   */
   private function buildRequestUrlScreenshot($url, $options) : string {
     return $this->buildRequestUrl('thumbnails/v2/%s?%s', $url, $options);
   }
 
+  /**
+   * @param $url
+   * @param $options
+   *
+   * @return string
+   */
   private function buildRequestUrlInfo($url, $options) : string {
     return $this->buildRequestUrl('thumbnails/v2/%s/info?%s', $url, $options);
   }
 
+  /**
+   * @param $requestPath
+   * @param $url
+   * @param $options
+   *
+   * @return string
+   */
   private function buildRequestUrl($requestPath, $url, $options) : string {
     $accessKey = $this->config['access_key'];
     $secretKey = $this->config['secret_key'];

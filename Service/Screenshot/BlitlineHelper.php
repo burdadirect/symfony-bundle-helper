@@ -1,7 +1,9 @@
 <?php
 
-namespace HBM\HelperBundle\Services;
+namespace HBM\HelperBundle\Service\Screenshot;
 
+use HBM\HelperBundle\Service\HmacHelper;
+use HBM\HelperBundle\Service\S3Helper;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
@@ -12,18 +14,34 @@ class BlitlineHelper {
 
   use ContainerAwareTrait;
 
-  /** @var array */
+  /**
+   * @var array
+   */
   private $config;
 
-  /** @var \HBM\HelperBundle\Services\S3Helper */
+  /**
+   * @var S3Helper
+   */
   private $s3;
 
-  /** @var \HBM\HelperBundle\Services\HmacHelper */
+  /**
+   * @var HmacHelper
+   */
   private $hmac;
 
-  /** @var \Symfony\Component\Routing\Router */
+  /**
+   * @var Router
+   */
   private $router;
 
+  /**
+   * BlitlineHelper constructor.
+   *
+   * @param $config
+   * @param S3Helper $s3
+   * @param HmacHelper $hmac
+   * @param Router $router
+   */
   public function __construct($config, S3Helper $s3, HmacHelper $hmac, Router $router) {
     $this->config = $config;
     $this->s3 = $s3;
@@ -106,6 +124,7 @@ class BlitlineHelper {
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
     curl_setopt($ch, CURLOPT_POSTFIELDS, $http_query);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
     return json_decode(curl_exec($ch), TRUE);
   }
 

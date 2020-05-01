@@ -23,12 +23,12 @@ class HBMHelperExtension extends Extension {
 
     $configToUse = $config;
 
-    $container->setParameter('hbm.helper.bitly', $configToUse['bitly']);
     $container->setParameter('hbm.helper.blitline', $configToUse['blitline']);
     $container->setParameter('hbm.helper.screenshotapi', $configToUse['screenshotapi']);
     $container->setParameter('hbm.helper.screenshotlayer', $configToUse['screenshotlayer']);
     $container->setParameter('hbm.helper.webshrinker', $configToUse['webshrinker']);
-    $container->setParameter('hbm.helper.cleverreach', $configToUse['cleverreach']);
+
+    $container->setParameter('hbm.helper.bitly', $configToUse['bitly']);
     $container->setParameter('hbm.helper.hmac', $configToUse['hmac']);
     $container->setParameter('hbm.helper.s3', $configToUse['s3']);
     $container->setParameter('hbm.helper.sanitizing', $configToUse['sanitizing']);

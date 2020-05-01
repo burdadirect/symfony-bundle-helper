@@ -1,22 +1,34 @@
 <?php
 
-namespace HBM\HelperBundle\Services;
+namespace HBM\HelperBundle\Service\Screenshot;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
 class ScreenshotLayerHelper {
 
-  /** @var array */
+  /**
+   * @var array
+   */
   private $config;
 
-  /** @var Client */
+  /**
+   * @var Client
+   */
   private $client;
 
+  /**
+   * ScreenshotLayerHelper constructor.
+   *
+   * @param $config
+   */
   public function __construct($config) {
     $this->config = $config;
   }
 
+  /**
+   * @return Client
+   */
   private function getClient() : Client {
     if ($this->client === NULL) {
       $this->client = new Client(['base_uri' => 'https://api.screenshotlayer.com/api']);
@@ -27,7 +39,6 @@ class ScreenshotLayerHelper {
   /**
    * @param $url
    * @param array $options
-   * @param array $data
    *
    * @return null|mixed|ResponseInterface
    */

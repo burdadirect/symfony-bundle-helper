@@ -1,34 +1,51 @@
 <?php
 
-namespace HBM\HelperBundle\Services;
+namespace HBM\HelperBundle\Service;
 
 use Aws\S3\S3Client;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class S3Helper
-{
+class S3Helper {
 
-  use ContainerAwareTrait;
-
-  /** @var array */
+  /**
+   * @var array
+   */
   private $config;
 
-  /** @var S3Client */
+  /**
+   * @var S3Client
+   */
   private $s3client;
 
-  /** @var string */
+  /**
+   * @var string
+   */
   private $name = 'default';
 
+  /**
+   * S3Helper constructor.
+   *
+   * @param $config
+   */
   public function __construct($config) {
     $this->config = $config;
   }
 
-  public function setName($name) {
+  /**
+   * @param $name
+   *
+   * @return $this
+   */
+  public function setName($name) : self {
     $this->name = $name;
 
     return $this;
   }
 
+  /**
+   * @param $name
+   *
+   * @return string
+   */
   public function getName($name) : string {
     if ($name === NULL) {
       $name = $this->name;
@@ -41,10 +58,21 @@ class S3Helper
     return $name;
   }
 
+  /**
+   * @param $name
+   *
+   * @return mixed|null
+   */
   public function getConfig($name) {
     return $this->config[$this->getName($name)] ?? NULL;
   }
 
+  /**
+   * @param $name
+   * @param $key
+   *
+   * @return string|null
+   */
   public function getConfigValue($name, $key) : ?string {
     return $this->config[$this->getName($name)][$key] ?? NULL;
   }

@@ -2,13 +2,14 @@
 
 namespace Tests\HBM\HelperBundle\Service;
 
-use HBM\HelperBundle\Services\SanitizingHelper;
+use HBM\HelperBundle\Service\SanitizingHelper;
 use PHPUnit\Framework\TestCase;
 
-class SanitizingHelperTest extends TestCase
-{
+class SanitizingHelperTest extends TestCase {
 
-  /** @var SanitizingHelper */
+  /**
+   * @var SanitizingHelper
+   */
   private $sanitizingHelper;
 
   public function setUp() : void {

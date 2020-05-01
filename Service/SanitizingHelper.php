@@ -1,19 +1,31 @@
 <?php
 
-namespace HBM\HelperBundle\Services;
+namespace HBM\HelperBundle\Service;
 
 /**
  * Taken from WordPress: wp-includes/formatting.php
  */
 class SanitizingHelper {
 
-  /** @var array */
+  /**
+   * @var array
+   */
   private $config;
 
+  /**
+   * SanitizingHelper constructor.
+   *
+   * @param $config
+   */
   public function __construct($config) {
     $this->config = $config;
   }
 
+  /**
+   * @param null $lang
+   *
+   * @return mixed
+   */
   private function lang($lang = NULL) {
     if ($lang === NULL) {
       $lang = $this->config['language'];
@@ -22,6 +34,9 @@ class SanitizingHelper {
     return $lang;
   }
 
+  /**
+   * @return mixed
+   */
   private function sep() {
     return $this->config['sep'];
   }

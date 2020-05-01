@@ -2,7 +2,7 @@
 
 namespace HBM\HelperBundle\Twig;
 
-use HBM\HelperBundle\Services\SanitizingHelper;
+use HBM\HelperBundle\Service\SanitizingHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
