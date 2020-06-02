@@ -21,13 +21,14 @@ class HmacHelper {
   /**
    * @param $varToSign
    * @param null $secret
+   * @param string $sep
    *
    * @return string
    */
-  public function sign($varToSign, $secret = NULL) : string {
+  public function sign($varToSign, $secret = NULL, $sep = "\n") : string {
     $stringToSign = $varToSign;
     if (\is_array($stringToSign)) {
-      $stringToSign = implode("\n", $varToSign)."\n";
+      $stringToSign = implode($sep, $varToSign).$sep;
     }
 
     $secretToUse = $secret;
