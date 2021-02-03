@@ -1,5 +1,5 @@
 {
-  "name": "burdanews/symfony-bundle-helper",
+  "name": "burdadirect/symfony-bundle-helper",
   "description": "HBM Helper Bundle - StringSanitizer, S3Helper, BlitlineHelper, HmacHelper.",
   "authors" : [{
     "name" : "Christian Puchinger",
