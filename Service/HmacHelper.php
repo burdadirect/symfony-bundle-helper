@@ -39,4 +39,22 @@ class HmacHelper {
     return base64_encode(hash_hmac('sha256', $stringToSign, $secretToUse, true));
   }
 
+  /**
+   * @param $varToSign
+   * @param array|string $secretData
+   *
+   * @return string
+   */
+  public function signWithSecretData($varToSign, $secretData) : string {
+    if (is_array($secretData)) {
+      $secret = $secretData['secret'];
+      $sep = $secretData['separator'] ?? $secretData['sep'] ?? "\n";
+    } else {
+      $secret = $secretData;
+      $sep = "\n";
+    }
+
+    return $this->sign($varToSign, $secret, $sep);
+  }
+
 }
