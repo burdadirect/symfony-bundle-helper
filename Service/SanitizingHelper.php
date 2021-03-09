@@ -17,16 +17,16 @@ class SanitizingHelper {
    *
    * @param $config
    */
-  public function __construct($config) {
+  public function __construct(array $config) {
     $this->config = $config;
   }
 
   /**
-   * @param null $lang
+   * @param string|null $lang
    *
    * @return mixed
    */
-  private function lang($lang = NULL) {
+  private function lang(?string $lang) : ?string {
     if ($lang === NULL) {
       $lang = $this->config['language'];
     }
@@ -41,43 +41,18 @@ class SanitizingHelper {
     return $this->config['sep'];
   }
 
-  /**
-   * Repair html.
-   *
-   * @param string $html
-   * @param array $options
-   *
-   * @return string
-   */
-  public function repairHtml($html, array $options = []) : string {
-    $defaultOptions = [
-      'show-body-only' => TRUE,
-      'output-xhtml' => TRUE,
-      'quote-ampersand' => FALSE,
-      'wrap' => FALSE,
-      'char-encoding' => 'utf8',
-      'newline' => 'CRLF',
-    ];
-
-    $mergedOptions = array_merge($defaultOptions, $options);
-
-    $tidy = new \tidy();
-    $htmlTidy = $tidy->repairString($html, $mergedOptions, 'UTF8');
-
-    return str_replace("\r\n", "\n", trim($htmlTidy));
-  }
-
   /****************************************************************************/
 
   /**
    * Ensures folder sep according to arguments.
    *
-   * @param $path
-   * @param null $leading
-   * @param null $trailing
+   * @param string|null $path
+   * @param bool|null $leading
+   * @param bool|null $trailing
+   *
    * @return string
    */
-  public function ensureSep($path, $leading = NULL, $trailing = NULL) : string {
+  public function ensureSep(?string $path, ?bool $leading = NULL, ?bool $trailing = NULL) : string {
     if ($leading !== NULL) {
       $path = ltrim($path, $this->sep());
     }
@@ -98,91 +73,99 @@ class SanitizingHelper {
   /**
    * Ensures a folder sep at the end of the path.
    *
-   * @param string $path
+   * @param string|null $path
+   *
    * @return string
    */
-  public function ensureTrailingSep($path) : string {
+  public function ensureTrailingSep(?string $path) : string {
     return $this->ensureSep($path, NULL, TRUE);
   }
 
   /**
    * Ensures a folder sep at the beginning of the path.
    *
-   * @param string $path
+   * @param string|null $path
+   *
    * @return string
    */
-  public function ensureLeadingSep($path) : string {
-    return $this->ensureSep($path, TRUE, NULL);
+  public function ensureLeadingSep(?string $path) : string {
+    return $this->ensureSep($path, TRUE);
   }
 
   /**
    * Ensures a folder sep at the end of the directory and no folder sep at the beginning
    *
-   * @param string $path
+   * @param string|null $path
+   *
    * @return string
    */
-  public function normalizeFolderRelative($path) : string {
+  public function normalizeFolderRelative(?string $path) : string {
     return $this->ensureSep($this->unifySep($path), FALSE, TRUE);
   }
 
   /**
    * Ensures a folder sep at the beginning and at the end of the directory.
    *
-   * @param string $path
+   * @param string|null $path
+   *
    * @return string
    */
-  public function normalizeFolderAbsolute($path) : string {
+  public function normalizeFolderAbsolute(?string $path) : string {
     return $this->ensureSep($this->unifySep($path), TRUE, TRUE);
   }
 
   /**
    * Strips the folder separator from the beginning of the file.
    *
-   * @param string $path
+   * @param string|null $path
+   *
    * @return string
    */
-  public function normalizeFileRelative($path) : string {
-    return $this->ensureSep($this->unifySep($path), FALSE, NULL);
+  public function normalizeFileRelative(?string $path) : string {
+    return $this->ensureSep($this->unifySep($path), FALSE);
   }
 
   /**
    * Strips the folder separator from the beginning of the file.
    *
-   * @param string $path
+   * @param string|null $path
+   *
    * @return string
    */
-  public function normalizeFileAbsolute($path) : string {
-    return $this->ensureSep($this->unifySep($path), TRUE, NULL);
+  public function normalizeFileAbsolute(?string $path) : string {
+    return $this->ensureSep($this->unifySep($path), TRUE);
   }
 
   /****************************************************************************/
 
   /**
-   * Replace windows folder delimiter
+   * Replace windows folder delimiter.
    *
-   * @param $path
+   * @param string|null $path
+   *
    * @return string
    */
-  public function unifySep($path) : string {
+  public function unifySep(?string $path) : string {
     return str_replace('\\', $this->sep(), $path);
   }
 
   /**
    * Returns a path where all string parts between the folder separator have been sanitized.
    *
-   * @param $path
+   * @param string|null $path
    * @param bool $case_sensitive
-   * @param string $lang
+   * @param string|null $lang
+   *
    * @return string
    */
-  public function sanitizePath($path, $case_sensitive = FALSE, $lang = NULL) : string {
+  public function sanitizePath(?string $path, bool $case_sensitive = FALSE, ?string $lang = NULL) : string {
     $path_parts = explode($this->sep(), $this->unifySep($path));
 
     $sanitized_path_parts = array();
     foreach ($path_parts as $path_part) {
       $sanitized_path_part = $this->sanitizeChars($path_part, FALSE, $case_sensitive, $this->lang($lang));
 
-      if (\strlen($sanitized_path_part) > 0) {
+      if ($sanitized_path_part !== '') {
         $sanitized_path_parts[] = $sanitized_path_part;
       }
     }
@@ -192,13 +175,15 @@ class SanitizingHelper {
 
   /**
    * Returns a string where all invalid chars have been sanitized.
-   * @param $string
+   *
+   * @param string|null$string
    * @param bool $with_slash
    * @param bool $case_sensitive
-   * @param string $lang
+   * @param string|null $lang
+   *
    * @return string
    */
-  public function sanitizeString($string, $with_slash = FALSE, $case_sensitive = FALSE, $lang = NULL) : string {
+  public function sanitizeString(?string $string, bool $with_slash = FALSE, bool $case_sensitive = FALSE, ?string $lang = NULL) : string {
     return $this->sanitizeChars($string, $with_slash, $case_sensitive, $this->lang($lang));
   }
 
@@ -218,13 +203,14 @@ class SanitizingHelper {
    *
    * TODO: Continue at "Großes G mit Zirkumflex"
    *
-   * @param string $string
-   * @param string|boolean $with_slash
-   * @param string|boolean $case_sensitive
-   * @param string $lang
+   * @param string|null $string
+   * @param boolean $withSlash
+   * @param boolean $caseSensitive
+   * @param string|null $lang
+   *
    * @return string
    */
-  private function sanitizeChars($string, $with_slash = FALSE, $case_sensitive = FALSE, $lang = NULL) : string {
+  private function sanitizeChars(?string $string, bool $withSlash = FALSE, bool $caseSensitive = FALSE, ?string $lang = NULL) : string {
     $langs = array(
       '@' => array('de' => '-at-',     'en' => '-at-'),
       '&' => array('de' => '-und-',    'en' => '-and-'),
@@ -241,16 +227,15 @@ class SanitizingHelper {
       '¼' => array('de' => '-viertel-',    'en' => '-quater-'),
       '½' => array('de' => '-halb-',       'en' => '-half-'),
       '¾' => array('de' => '-dreiviertel-','en' => '-three-quater-'),
-
     );
 
-    if (!$case_sensitive) {
+    if (!$caseSensitive) {
       $string = mb_strtolower($string, 'UTF-8');
     } else {
       $string = utf8_encode($string);
     }
 
-    if (!$with_slash) {
+    if (!$withSlash) {
       $string = str_replace('/', '-', $string);
     }
 
@@ -292,7 +277,7 @@ class SanitizingHelper {
     /**********************************************************************/
 
     // UPPER
-    if ($case_sensitive) {
+    if ($caseSensitive) {
       // UMLAUT
       $search_replace[] = array('search' => 'Ä', 'replace' => 'Ae');
       $search_replace[] = array('search' => 'Ö', 'replace' => 'Oe');
@@ -333,10 +318,10 @@ class SanitizingHelper {
     /**********************************************************************/
 
     $valid_characters = 'abcdefghijklmnopqrstuvwxyz'.'0123456789'.'-_.';
-    if ($case_sensitive) {
+    if ($caseSensitive) {
       $valid_characters .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     }
-    if ($with_slash) {
+    if ($withSlash) {
       $valid_characters .= '/';
     }
     $valid_characters = str_split($valid_characters);

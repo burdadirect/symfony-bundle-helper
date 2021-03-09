@@ -19,13 +19,13 @@ class HmacHelper {
   }
 
   /**
-   * @param $varToSign
-   * @param null $secret
-   * @param string $sep
+   * @param string|array $varToSign
+   * @param string|null $secret
+   * @param string|null $sep
    *
    * @return string
    */
-  public function sign($varToSign, $secret = NULL, $sep = "\n") : string {
+  public function sign($varToSign, ?string $secret = NULL, ?string $sep = "\n") : string {
     $stringToSign = $varToSign;
     if (\is_array($stringToSign)) {
       $stringToSign = implode($sep, $varToSign).$sep;
@@ -40,8 +40,8 @@ class HmacHelper {
   }
 
   /**
-   * @param $varToSign
-   * @param array|string $secretData
+   * @param string|array varToSign
+   * @param string|array $secretData
    *
    * @return string
    */

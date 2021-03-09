@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\HBM\HelperBundle\Service;
+namespace Tests\HBM\HelperBundle\Services;
 
 use HBM\HelperBundle\Service\SanitizingHelper;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->ensureTrailingSep($key), 'Normalizing of dir "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->ensureTrailingSep($key), 'Normalizing of dir "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -51,7 +51,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->normalizeFolderRelative($key), 'Normalizing of folder "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->normalizeFolderRelative($key), 'Normalizing of folder "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -63,7 +63,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->normalizeFileRelative($key), 'Normalizing of file "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->normalizeFileRelative($key), 'Normalizing of file "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -74,7 +74,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->sanitizePath($key), 'Sanitizing of path "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->sanitizePath($key), 'Sanitizing of path "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -85,7 +85,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->sanitizeString($key, TRUE), 'Sanitizing of string "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->sanitizeString($key, TRUE), 'Sanitizing of string "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -96,7 +96,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->sanitizeString($key, FALSE), 'Sanitizing of string "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->sanitizeString($key, FALSE), 'Sanitizing of string "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -107,7 +107,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->slug($key, 'de'), 'Slug (de) of string "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->slug($key, 'de'), 'Slug (de) of string "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -118,7 +118,7 @@ class SanitizingHelperTest extends TestCase {
     );
 
     foreach ($values as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->slug($key, 'en'), 'Slug (en) of string "'.$key.'" should be "'.$value.'".');
+      self::assertEquals($value, $this->getSanitizingHelper()->slug($key, 'en'), 'Slug (en) of string "'.$key.'" should be "'.$value.'".');
     }
   }
 
@@ -130,7 +130,7 @@ class SanitizingHelperTest extends TestCase {
     ];
 
     foreach ($testStrings as $key => $value) {
-      $this->assertEquals($value, $this->getSanitizingHelper()->repairHtml($key), 'HTML should be: '.$value);
+      self::assertEquals($value, $this->getSanitizingHelper()->repairHtml($key), 'HTML should be: '.$value);
     }
   }
 
