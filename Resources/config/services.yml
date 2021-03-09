@@ -37,10 +37,3 @@ services:
     hbm.helper.sanitizing:
         arguments: ["%hbm.helper.sanitizing%"]
         class: HBM\HelperBundle\Service\SanitizingHelper
-
-    # TWIG
-    hbm.twig_extension.sanitizing:
-        class: HBM\HelperBundle\Twig\SanitizingExtension
-        arguments: ["@hbm.helper.sanitizing"]
-        tags:
-            - { name: twig.extension }
