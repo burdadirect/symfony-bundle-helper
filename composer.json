@@ -19,8 +19,9 @@
   },
   "require": {
     "php" : ">=7.3",
-    "ext-json" : "*",
     "ext-curl" : "*",
+    "ext-json" : "*",
+    "ext-tidy" : "*",
     "ext-mbstring": "*",
     "symfony/config": "^4.4|^5.2",
     "symfony/dependency-injection": "^4.4|^5.2",

@@ -23,7 +23,7 @@ class SanitizingHelperTest extends TestCase {
   /**
    * @return SanitizingHelper
    */
-  protected function getSanitizingHelper() {
+  protected function getSanitizingHelper() : SanitizingHelper {
     if ($this->sanitizingHelper === NULL) {
       $this->sanitizingHelper = new SanitizingHelper(['language' => 'de', 'sep' => '/']);
     }
@@ -31,7 +31,7 @@ class SanitizingHelperTest extends TestCase {
     return $this->sanitizingHelper;
   }
 
-  public function testEnsureTrailingSep() {
+  public function testEnsureTrailingSep() : void {
     $values = array(
       'C:/path/to/images'   => 'C:/path/to/images/',
       'C:/path/to/images/'  => 'C:/path/to/images/',
@@ -43,7 +43,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testNormalizeFolderSepFolder() {
+  public function testNormalizeFolderSepFolder() : void {
     $values = array(
       'path/to/images'     => 'path/to/images/',
       '/path/to/images/'   => 'path/to/images/',
@@ -55,7 +55,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testNormalizeFolderSepFile() {
+  public function testNormalizeFolderSepFile() : void {
     $values = array(
       'path/to/images/1.jpg'   => 'path/to/images/1.jpg',
       '/path/to/images/1.jpg'  => 'path/to/images/1.jpg',
@@ -67,7 +67,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testSanitizePath() {
+  public function testSanitizePath() : void {
     $values = array(
       'bla_blub/@home/5€/süß/' => 'bla_blub/at-home/5-euro/suess/',
       'bla_blub/@home/5€/süß'  => 'bla_blub/at-home/5-euro/suess/',
@@ -78,7 +78,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testSanitizeStringWithSlashes() {
+  public function testSanitizeStringWithSlashes() : void {
     $values = array(
       'bla_blub/@home---/5€/süß/' => 'bla_blub/-at-home-/5-euro-/suess/',
       'bla_blub/@home/5€/süß'     => 'bla_blub/-at-home/5-euro-/suess',
@@ -89,7 +89,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testSanitizeStringWithoutSlashes() {
+  public function testSanitizeStringWithoutSlashes() : void {
     $values = array(
       'bla_blub/@home---/5€/süß/-' => 'bla_blub-at-home-5-euro-suess',
       'bla_blub/@home/5€/süß'      => 'bla_blub-at-home-5-euro-suess',
@@ -100,7 +100,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testSlugDE() {
+  public function testSlugDE() : void {
     $values = array(
       'CocaCola®' => 'cocacola-eingetragene-marke',
       '5£' => '5-pfund',
@@ -111,7 +111,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testSlugEN() {
+  public function testSlugEN() : void {
     $values = array(
       'CocaCola®' => 'cocacola-registered-trade-mark',
       '5£' => '5-pound',
@@ -122,7 +122,7 @@ class SanitizingHelperTest extends TestCase {
     }
   }
 
-  public function testRepairHtml() {
+  public function testRepairHtml() : void {
     $testStrings = [
       '<p>Das ist <strong>eine</stong> erste Beschreibung.' => "<p>Das ist <strong>eine erste Beschreibung.</strong></p>",
       'Das ist <b>eine</i> zweite Beschreibung.' => "Das ist <b>eine</b> zweite Beschreibung.",

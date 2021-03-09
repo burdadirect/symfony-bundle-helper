@@ -44,6 +44,32 @@ class SanitizingHelper {
   /****************************************************************************/
 
   /**
+   * Repair html.
+   *
+   * @param string|null $html
+   * @param array $options
+   *
+   * @return string
+   */
+  public function repairHtml(?string $html, array $options = []) : string {
+    $defaultOptions = [
+      'show-body-only' => TRUE,
+      'output-xhtml' => TRUE,
+      'quote-ampersand' => FALSE,
+      'wrap' => FALSE,
+      'char-encoding' => 'utf8',
+      'newline' => 'CRLF',
+    ];
+
+    $mergedOptions = array_merge($defaultOptions, $options);
+
+    $tidy = new \tidy();
+    $htmlTidy = $tidy->repairString($html, $mergedOptions, 'UTF8');
+
+    return str_replace("\r\n", "\n", trim($htmlTidy));
+  }
+
+  /**
    * Ensures folder sep according to arguments.
    *
    * @param string|null $path
