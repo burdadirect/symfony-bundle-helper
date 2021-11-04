@@ -2,38 +2,72 @@ services:
     _defaults:
         public: true
 
-    # HELPER - SCREENSHOT
+    ############################################################################
+    # HELPER - SCREENSHOT                                                      #
+    ############################################################################
 
-    hbm.helper.blitline:
-        class: HBM\HelperBundle\Service\Screenshot\BlitlineHelper
+    HBM\HelperBundle\Service\Screenshot\BlitlineHelper:
         arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]
 
-    hbm.helper.screenshotapi:
-        class: HBM\HelperBundle\Service\Screenshot\ScreenshotApiHelper
+    hbm.helper.blitline:
+        alias: HBM\HelperBundle\Service\Screenshot\BlitlineHelper
+
+    ############################################################################
+
+    HBM\HelperBundle\Service\Screenshot\ScreenshotApiHelper:
         arguments: ["%hbm.helper.screenshotapi%"]
 
-    hbm.helper.screenshotlayer:
-        class: HBM\HelperBundle\Service\Screenshot\ScreenshotLayerHelper
+    hbm.helper.screenshotapi:
+        alias: HBM\HelperBundle\Service\Screenshot\ScreenshotApiHelper
+
+    ############################################################################
+
+    HBM\HelperBundle\Service\Screenshot\ScreenshotLayerHelper:
         arguments: ["%hbm.helper.screenshotlayer%"]
 
-    hbm.helper.webshrinker:
-        class: HBM\HelperBundle\Service\Screenshot\WebshrinkerHelper
+    hbm.helper.screenshotlayer:
+        alias: HBM\HelperBundle\Service\Screenshot\ScreenshotLayerHelper
+
+    ############################################################################
+
+    HBM\HelperBundle\Service\Screenshot\WebshrinkerHelper:
         arguments: ["%hbm.helper.webshrinker%"]
 
-    # HELPER
+    hbm.helper.webshrinker:
+        alias: HBM\HelperBundle\Service\Screenshot\WebshrinkerHelper
 
-    hbm.helper.bitly:
-        class: HBM\HelperBundle\Service\BitlyHelper
+    ############################################################################
+    # HELPER                                                                   #
+    ############################################################################
+
+    HBM\HelperBundle\Service\BitlyHelper:
         arguments: ["%hbm.helper.bitly%"]
 
-    hbm.helper.hmac:
-        class: HBM\HelperBundle\Service\HmacHelper
+    hbm.helper.bitly:
+        alias: HBM\HelperBundle\Service\BitlyHelper
+
+    ############################################################################
+
+    HBM\HelperBundle\Service\HmacHelper:
         arguments: ["%hbm.helper.hmac%"]
 
-    hbm.helper.s3:
-        class: HBM\HelperBundle\Service\S3Helper
+    hbm.helper.hmac:
+        alias: HBM\HelperBundle\Service\HmacHelper
+
+    ############################################################################
+
+    HBM\HelperBundle\Service\S3Helper:
         arguments: ["%hbm.helper.s3%"]
 
-    hbm.helper.sanitizing:
+    hbm.helper.s3:
+        alias: HBM\HelperBundle\Service\S3Helper
+
+    ############################################################################
+
+    HBM\HelperBundle\Service\SanitizingHelper:
         arguments: ["%hbm.helper.sanitizing%"]
-        class: HBM\HelperBundle\Service\SanitizingHelper
+
+    hbm.helper.sanitizing:
+        alias: HBM\HelperBundle\Service\SanitizingHelper
+
+    ############################################################################
