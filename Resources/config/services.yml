@@ -1,13 +1,14 @@
 services:
     _defaults:
         public: true
+        autowire: true
 
     ############################################################################
     # HELPER - SCREENSHOT                                                      #
     ############################################################################
 
     HBM\HelperBundle\Service\Screenshot\BlitlineHelper:
-        arguments: ["%hbm.helper.blitline%", "@hbm.helper.s3", "@hbm.helper.hmac", "@router"]
+        arguments: ["%hbm.helper.blitline%"]
 
     hbm.helper.blitline:
         alias: HBM\HelperBundle\Service\Screenshot\BlitlineHelper
@@ -40,14 +41,6 @@ services:
     # HELPER                                                                   #
     ############################################################################
 
-    HBM\HelperBundle\Service\BitlyHelper:
-        arguments: ["%hbm.helper.bitly%"]
-
-    hbm.helper.bitly:
-        alias: HBM\HelperBundle\Service\BitlyHelper
-
-    ############################################################################
-
     HBM\HelperBundle\Service\HmacHelper:
         arguments: ["%hbm.helper.hmac%"]
 
@@ -71,3 +64,15 @@ services:
         alias: HBM\HelperBundle\Service\SanitizingHelper
 
     ############################################################################
+    # HELPER                                                                   #
+    ############################################################################
+
+    HBM\HelperBundle\Twig\Runtime\:
+        resource: '../../Twig/Runtime/*'
+        tags:
+            - { name: twig.runtime }
+
+    HBM\HelperBundle\Twig\Extension\:
+        resource: '../../Twig/Extension/*'
+        tags:
+            - { name: twig.extension }

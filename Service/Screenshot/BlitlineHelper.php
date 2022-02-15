@@ -7,7 +7,7 @@ use HBM\HelperBundle\Service\S3Helper;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 class BlitlineHelper {
 
@@ -27,7 +27,7 @@ class BlitlineHelper {
   private $hmac;
 
   /**
-   * @var Router
+   * @var RouterInterface
    */
   private $router;
 
@@ -37,9 +37,9 @@ class BlitlineHelper {
    * @param $config
    * @param S3Helper $s3
    * @param HmacHelper $hmac
-   * @param Router $router
+   * @param RouterInterface $router
    */
-  public function __construct($config, S3Helper $s3, HmacHelper $hmac, Router $router) {
+  public function __construct($config, S3Helper $s3, HmacHelper $hmac, RouterInterface $router) {
     $this->config = $config;
     $this->s3 = $s3;
     $this->hmac = $hmac;
