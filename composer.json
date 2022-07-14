@@ -9,7 +9,7 @@
   "type": "symfony-bundle",
   "autoload": {
     "psr-4": {
-      "HBM\\HelperBundle\\": ""
+      "HBM\\HelperBundle\\": "src/"
     }
   },
   "autoload-dev": {
@@ -23,16 +23,16 @@
     "ext-json" : "*",
     "ext-tidy" : "*",
     "ext-mbstring": "*",
-    "symfony/config": "^4.4|^5.2",
-    "symfony/dependency-injection": "^4.4|^5.2",
-    "symfony/framework-bundle": "^4.4|^5.2",
-    "symfony/twig-bundle": "^4.4|^5.2",
+    "symfony/config": "^5.4",
+    "symfony/dependency-injection": "^5.4",
+    "symfony/framework-bundle": "^5.4",
+    "symfony/twig-bundle": "^5.4",
     "aws/aws-sdk-php": "^3.52",
     "guzzlehttp/guzzle": "^7.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
-    "phpunit/phpunit" : "^8.0|^9.0",
-    "symfony/phpunit-bridge": "^4.4|^5.2|^6.0"
+    "phpunit/phpunit" : "^9.5",
+    "symfony/phpunit-bridge": "^6.0"
   }
 }
