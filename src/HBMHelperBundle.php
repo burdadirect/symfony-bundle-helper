@@ -4,10 +4,10 @@ namespace HBM\HelperBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class HBMHelperBundle extends Bundle {
-
-  public function getPath(): string {
-    return \dirname(__DIR__);
-  }
-
+class HBMHelperBundle extends Bundle
+{
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
 }

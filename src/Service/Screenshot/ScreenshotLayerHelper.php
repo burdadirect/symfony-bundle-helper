@@ -5,60 +5,54 @@ namespace HBM\HelperBundle\Service\Screenshot;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
-class ScreenshotLayerHelper {
+class ScreenshotLayerHelper
+{
+    /** @var array */
+    private $config;
 
-  /**
-   * @var array
-   */
-  private $config;
+    /** @var Client */
+    private $client;
 
-  /**
-   * @var Client
-   */
-  private $client;
-
-  /**
-   * ScreenshotLayerHelper constructor.
-   *
-   * @param $config
-   */
-  public function __construct($config) {
-    $this->config = $config;
-  }
-
-  /**
-   * @return Client
-   */
-  private function getClient() : Client {
-    if ($this->client === NULL) {
-      $this->client = new Client(['base_uri' => 'https://api.screenshotlayer.com/api']);
+    /**
+     * ScreenshotLayerHelper constructor.
+     */
+    public function __construct($config)
+    {
+        $this->config = $config;
     }
-    return $this->client;
-  }
 
-  /**
-   * @param $url
-   * @param array $options
-   *
-   * @return null|mixed|ResponseInterface
-   */
-  public function capture($url, array $options = []) {
-    $query = array_merge($options, [
-      'access_key' => $this->config['accesskey'],
-      'url' => $url
-    ]);
+    private function getClient(): Client
+    {
+        if ($this->client === null) {
+            $this->client = new Client(['base_uri' => 'https://api.screenshotlayer.com/api']);
+        }
 
-    $response = NULL;
-    try {
-      $response = $this->getClient()->request('GET', 'capture',
-        [
-          'query' => $query
+        return $this->client;
+    }
+
+    /**
+     * @return null|mixed|ResponseInterface
+     */
+    public function capture($url, array $options = [])
+    {
+        $query = array_merge($options, [
+          'access_key' => $this->config['accesskey'],
+          'url'        => $url,
+        ]);
+
+        $response = null;
+
+        try {
+            $response = $this->getClient()->request(
+                'GET',
+                'capture',
+                [
+                'query' => $query,
         ]
-      );
-    } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            );
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+        }
+
+        return $response;
     }
-
-    return $response;
-  }
-
 }
