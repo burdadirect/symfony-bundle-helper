@@ -5,18 +5,13 @@ namespace HBM\HelperBundle\Traits\ServiceDependencies;
 use HBM\HelperBundle\Service\HmacHelper;
 use Symfony\Contracts\Service\Attribute\Required;
 
-trait HmacHelperDependencyTrait {
+trait HmacHelperDependencyTrait
+{
+    protected HmacHelper $hmacHelper;
 
-  protected HmacHelper $hmacHelper;
-
-  /**
-   * @param HmacHelper $hmacHelper
-   *
-   * @return void
-   */
-  #[Required]
-  public function setHmacHelper(HmacHelper $hmacHelper): void {
-    $this->hmacHelper = $hmacHelper;
-  }
-
+    #[Required]
+    public function setHmacHelper(HmacHelper $hmacHelper): void
+    {
+        $this->hmacHelper = $hmacHelper;
+    }
 }
