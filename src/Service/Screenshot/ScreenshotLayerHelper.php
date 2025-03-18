@@ -50,7 +50,7 @@ class ScreenshotLayerHelper
                 'query' => $query,
         ]
             );
-        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+        } catch (\GuzzleHttp\Exception\GuzzleException) {
         }
 
         return $response;

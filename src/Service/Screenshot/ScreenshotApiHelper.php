@@ -125,7 +125,7 @@ class ScreenshotApiHelper
                 'body' => json_encode($options),
         ]
             );
-        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+        } catch (\GuzzleHttp\Exception\GuzzleException) {
         }
 
         if ($response instanceof ResponseInterface) {
@@ -157,7 +157,7 @@ class ScreenshotApiHelper
                 ],
         ]
             );
-        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+        } catch (\GuzzleHttp\Exception\GuzzleException) {
         }
 
         if ($response instanceof ResponseInterface) {
