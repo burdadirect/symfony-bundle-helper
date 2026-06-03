@@ -60,7 +60,7 @@ class SanitizingHelper
     /**
      * Ensures folder sep according to arguments.
      */
-    public function ensureSep(?string $path, bool $leading = null, bool $trailing = null): string
+    public function ensureSep(?string $path, ?bool $leading = null, ?bool $trailing = null): string
     {
         if ($leading !== null) {
             $path = ltrim($path, $this->sep());
@@ -140,7 +140,7 @@ class SanitizingHelper
     /**
      * Returns a path where all string parts between the folder separator have been sanitized.
      */
-    public function sanitizePath(?string $path, bool $case_sensitive = false, string $lang = null): string
+    public function sanitizePath(?string $path, bool $case_sensitive = false, ?string $lang = null): string
     {
         $path_parts = explode($this->sep(), $this->unifySep($path));
 
@@ -161,7 +161,7 @@ class SanitizingHelper
      *
      * @param null|string $string
      */
-    public function sanitizeString(?string $string, bool $with_slash = false, bool $case_sensitive = false, string $lang = null): string
+    public function sanitizeString(?string $string, bool $with_slash = false, bool $case_sensitive = false, ?string $lang = null): string
     {
         return $this->sanitizeChars($string, $with_slash, $case_sensitive, $this->lang($lang));
     }
@@ -181,7 +181,7 @@ class SanitizingHelper
      *
      * TODO: Continue at "Großes G mit Zirkumflex"
      */
-    private function sanitizeChars(?string $string, bool $withSlash = false, bool $caseSensitive = false, string $lang = null): string
+    private function sanitizeChars(?string $string, bool $withSlash = false, bool $caseSensitive = false, ?string $lang = null): string
     {
         $langs = [
           '@' => ['de' => '-at-',     'en' => '-at-'],
