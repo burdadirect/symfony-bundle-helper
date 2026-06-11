@@ -18,7 +18,7 @@ class HmacHelper
     /**
      * @param array|string $varToSign
      */
-    public function sign($varToSign, string $secret = null, ?string $sep = "\n"): string
+    public function sign($varToSign, ?string $secret = null, ?string $sep = "\n"): string
     {
         $stringToSign = $varToSign;
 
