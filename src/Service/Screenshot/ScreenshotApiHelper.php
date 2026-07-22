@@ -91,7 +91,7 @@ class ScreenshotApiHelper
      *
      * @return null|mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function capture($url, array $options = [], array &$data = null)
+    public function capture($url, array $options = [], ?array &$data = null)
     {
         $options['url'] = $url;
 
@@ -140,7 +140,7 @@ class ScreenshotApiHelper
     /**
      * @return null|mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function retrieve($key, array &$data = null)
+    public function retrieve($key, ?array &$data = null)
     {
         $params = ['key' => $key];
 
