@@ -161,126 +161,165 @@ class SanitizingHelper
     /**
      * To be continued: http://unicode.e-workers.de/unicode.php
      *
-     * TODO: Continue at "Großes G mit Zirkumflex"
+     * TODO: Continue at "Latin Extended-B" (character 384)
      */
     private function sanitizeChars(?string $string, bool $withSlash = false, bool $caseSensitive = false, ?string $lang = null): string
     {
-        $langs = [
-          '@' => ['de' => '-at-',     'en' => '-at-'],
-          '&' => ['de' => '-und-',    'en' => '-and-'],
-          '#' => ['de' => '-nummer-', 'en' => '-number-'],
-
-          '€' => ['de' => '-euro-',   'en' => '-euro-'],
-          '¢' => ['de' => '-cent-',   'en' => '-cent-'],
-          '£' => ['de' => '-pfund-',  'en' => '-pound-'],
-          '¥' => ['de' => '-yen-',    'en' => '-yen-'],
-
-          '©' => ['de' => '-copyright-',         'en' => '-copyright-'],
-          '®' => ['de' => '-eingetragene-marke-', 'en' => '-registered-trade-mark-'],
-
-          '¼' => ['de' => '-viertel-',    'en' => '-quater-'],
-          '½' => ['de' => '-halb-',       'en' => '-half-'],
-          '¾' => ['de' => '-dreiviertel-', 'en' => '-three-quater-'],
-        ];
-
+        // Prepare string.
         if (!$caseSensitive) {
             $string = mb_strtolower($string, 'UTF-8');
         } else {
             $string = mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
         }
 
+        $stringSanitized = $string;
         if (!$withSlash) {
-            $string = str_replace('/', '-', $string);
+            $stringSanitized = str_replace('/', '-', $stringSanitized);
         }
 
-        $search_replace   = [];
-        $search_replace[] = ['search' => ' ', 'replace' => '-'];
 
-        // TRANS
-        if ($lang !== null) {
-            foreach ($langs as $tmp_key => $tmp_value) {
-                $search_replace[] = ['search' => $tmp_key, 'replace' => $tmp_value[$lang]];
-            }
-        }
+        // Replace chars.
+        $searchReplace   = [];
+        $searchReplace[] = ['search' => ' ', 'replace' => '-'];
 
-        // UMLAUT
-        $search_replace[] = ['search' => 'ä', 'replace' => 'ae'];
-        $search_replace[] = ['search' => 'ö', 'replace' => 'oe'];
-        $search_replace[] = ['search' => 'ü', 'replace' => 'ue'];
-        $search_replace[] = ['search' => 'ß', 'replace' => 'ss'];
-
-        // LETTERS
-        $search_replace[] = ['search' => ['à', 'â', 'á', 'ã', 'å', 'æ', 'ā', 'ă', 'ą'],	'replace' => 'a'];
-        $search_replace[] = ['search' => ['ç', 'ć', 'ĉ', 'ċ', 'č'],						          'replace' => 'c'];
-        $search_replace[] = ['search' => ['ď', 'đ'],										                'replace' => 'd'];
-        $search_replace[] = ['search' => ['è', 'ê', 'é', 'ë', 'ē', 'ĕ', 'ė', 'ę', 'ě'],	'replace' => 'e'];
-        $search_replace[] = ['search' => ['ì', 'î', 'í', 'ĩ', 'ï'],						          'replace' => 'i'];
-        $search_replace[] = ['search' => ['ð'],											                    'replace' => 'd']; // eth
-        $search_replace[] = ['search' => ['ñ'],											                    'replace' => 'n'];
-        $search_replace[] = ['search' => ['ò', 'ô', 'ó', 'õ', 'ø'],						          'replace' => 'o'];
-        $search_replace[] = ['search' => ['ù', 'û', 'ú', 'ũ'],							            'replace' => 'u'];
-        $search_replace[] = ['search' => ['þ'],											                    'replace' => 'th']; // thorn
-        $search_replace[] = ['search' => ['ÿ', 'ý'],										                'replace' => 'y'];
-        $search_replace[] = ['search' => ['š'],											                    'replace' => 's'];
-        $search_replace[] = ['search' => ['ž'],											                    'replace' => 'z'];
-        $search_replace[] = ['search' => ['þ'],											                    'replace' => 'b'];
-        $search_replace[] = ['search' => ['ƒ'],											                    'replace' => 'f'];
-
-        // UPPER
+        $this->addReplacementsLanguage($lang, $searchReplace);
+        $this->addReplacementsLowercase($searchReplace);
         if ($caseSensitive) {
-            // UMLAUT
-            $search_replace[] = ['search' => 'Ä', 'replace' => 'Ae'];
-            $search_replace[] = ['search' => 'Ö', 'replace' => 'Oe'];
-            $search_replace[] = ['search' => 'Ü', 'replace' => 'Ue'];
-
-            // LETTERS
-            $search_replace[] = ['search' => ['À', 'Â', 'Á', 'Ã', 'Å', 'Æ', 'Ā', 'Ă', 'Ą'],	'replace' => 'A'];
-            $search_replace[] = ['search' => ['Ç', 'Ć', 'Ĉ', 'Ċ', 'Č'],						          'replace' => 'C'];
-            $search_replace[] = ['search' => ['Ď', 'Đ'],										                'replace' => 'D'];
-            $search_replace[] = ['search' => ['È', 'Ê', 'É', 'Ë', 'Ē', 'Ĕ', 'Ė', 'Ę', 'Ě'],	'replace' => 'E'];
-            $search_replace[] = ['search' => ['Ì', 'Î', 'Í', 'Ĩ', 'Ï'],						          'replace' => 'I'];
-            $search_replace[] = ['search' => ['Ð'],											                    'replace' => 'D']; // Eth
-            $search_replace[] = ['search' => ['Ñ'],											                    'replace' => 'N'];
-            $search_replace[] = ['search' => ['Ò', 'Ô', 'Ó', 'Õ', 'Ø'],						          'replace' => 'O'];
-            $search_replace[] = ['search' => ['Ù', 'Û', 'Ú', 'Ũ'],							            'replace' => 'U'];
-            $search_replace[] = ['search' => ['Ý'],											                    'replace' => 'Y'];
-            $search_replace[] = ['search' => ['Þ'],											                    'replace' => 'Th']; // Thorn
-            $search_replace[] = ['search' => ['Š'],											                    'replace' => 'S'];
-            $search_replace[] = ['search' => ['Ž'],											                    'replace' => 'Z'];
+            $this->addReplacementsUppercase($searchReplace);
         }
 
-        foreach ($search_replace as $data) {
-            $string = str_replace($data['search'], $data['replace'], $string);
+        foreach ($searchReplace as $data) {
+            $stringSanitized = str_replace($data['search'], $data['replace'], $stringSanitized);
         }
 
-        $search_replace = [
-          ['search' => '/^(-*)/', 'replace' => ''],                  // Replace starting hyphens
-          ['search' => '/(-*)$/', 'replace' => ''],                  // Remove trailing hyphens
-          ['search' => '/(-+)/', 'replace' => '-'],                   // Merge multiple hyphens to one
+
+        // Cleanup hyphens.
+        $searchReplace = [
+          ['search' => '/^(-*)/', 'replace' => ''],  // Replace starting hyphens
+          ['search' => '/(-*)$/', 'replace' => ''],  // Remove trailing hyphens
+          ['search' => '/(-+)/',  'replace' => '-'], // Merge multiple hyphens to one
         ];
 
-        foreach ($search_replace as $data) {
-            $string = preg_replace($data['search'], $data['replace'], $string);
+        foreach ($searchReplace as $data) {
+            $stringSanitized = preg_replace($data['search'], $data['replace'], $stringSanitized);
         }
 
-        $valid_characters = 'abcdefghijklmnopqrstuvwxyz0123456789-_.';
 
+        // Determine valid characters.
+        $validCharacters = 'abcdefghijklmnopqrstuvwxyz0123456789-_.';
         if ($caseSensitive) {
-            $valid_characters .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $validCharacters .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         }
-
         if ($withSlash) {
-            $valid_characters .= '/';
+            $validCharacters .= '/';
         }
-        $valid_characters = str_split($valid_characters);
+        $validCharacters = str_split($validCharacters);
 
-        $letters = str_split($string);
+
+        // Replace invalid characters.
+        $letters = str_split($stringSanitized);
         foreach ($letters as $key => $value) {
-            if (!\in_array($value, $valid_characters, true)) {
+            if (!\in_array($value, $validCharacters, true)) {
                 $letters[$key] = '';
             }
         }
 
         return implode('', $letters);
     }
+
+    private function addReplacementsLanguage(?string $lang, array &$searchReplace): void {
+        if (!in_array($lang, ['de', 'en'], true)) {
+            return;
+        }
+
+        $langs = [
+          '@' => ['de' => '-at-',                 'en' => '-at-'],
+          '&' => ['de' => '-und-',                'en' => '-and-'],
+          '#' => ['de' => '-nummer-',             'en' => '-number-'],
+
+          '€' => ['de' => '-euro-',               'en' => '-euro-'],
+          '¢' => ['de' => '-cent-',               'en' => '-cent-'],
+          '£' => ['de' => '-pfund-',              'en' => '-pound-'],
+          '¥' => ['de' => '-yen-',                'en' => '-yen-'],
+
+          '©' => ['de' => '-copyright-',          'en' => '-copyright-'],
+          '®' => ['de' => '-eingetragene-marke-', 'en' => '-registered-trade-mark-'],
+
+          '¼' => ['de' => '-viertel-',            'en' => '-quater-'],
+          '½' => ['de' => '-halb-',               'en' => '-half-'],
+          '¾' => ['de' => '-dreiviertel-',        'en' => '-three-quater-'],
+        ];
+
+        foreach ($langs as $char => $langData) {
+            $searchReplace[] = ['search' => $char, 'replace' => $langData[$lang]];
+        }
+    }
+
+    private function addReplacementsLowercase(array &$searchReplace): void {
+        // UMLAUT
+        $searchReplace[] = ['search' => 'ä', 'replace' => 'ae'];
+        $searchReplace[] = ['search' => 'ö', 'replace' => 'oe'];
+        $searchReplace[] = ['search' => 'ü', 'replace' => 'ue'];
+        $searchReplace[] = ['search' => 'ß', 'replace' => 'ss'];
+
+        // LETTERS
+        $searchReplace[] = ['search' => ['à', 'â', 'á', 'ã', 'å', 'æ', 'ā', 'ă', 'ą'], 'replace ' => 'a'];
+        $searchReplace[] = ['search' => ['þ'],                                         'replace ' => 'b'];
+        $searchReplace[] = ['search' => ['ç', 'ć', 'ĉ', 'ċ', 'č'],                     'replace ' => 'c'];
+        $searchReplace[] = ['search' => ['ď', 'đ', 'ð'],                               'replace ' => 'd'];
+        $searchReplace[] = ['search' => ['ð'],                                         'replace ' => 'd']; // eth
+        $searchReplace[] = ['search' => ['è', 'ê', 'é', 'ë', 'ē', 'ĕ', 'ė', 'ę', 'ě'], 'replace ' => 'e'];
+        $searchReplace[] = ['search' => ['ƒ'],                                         'replace ' => 'f'];
+        $searchReplace[] = ['search' => ['ĝ', 'ğ', 'ġ', 'ģ'],                          'replace ' => 'g'];
+        $searchReplace[] = ['search' => ['ĥ', 'ħ'],                                    'replace ' => 'h'];
+        $searchReplace[] = ['search' => ['ì', 'î', 'í', 'ĩ', 'ï', 'ī', 'ĭ', 'į', 'ı'], 'replace ' => 'i'];
+        $searchReplace[] = ['search' => ['ĳ'],                                         'replace ' => 'ij'];
+        $searchReplace[] = ['search' => ['ĵ'],                                         'replace ' => 'j'];
+        $searchReplace[] = ['search' => ['ķ', 'ĸ'],                                    'replace ' => 'k'];
+        $searchReplace[] = ['search' => ['ĺ', 'ļ', 'ľ', 'ŀ', 'ł'],                     'replace ' => 'l'];
+        $searchReplace[] = ['search' => ['ñ', 'ń', 'ņ', 'ň', 'ŉ', 'ŋ'],                'replace ' => 'n'];
+        $searchReplace[] = ['search' => ['ò', 'ô', 'ó', 'õ', 'ø', 'ō', 'ŏ', 'ő'],      'replace ' => 'o'];
+        $searchReplace[] = ['search' => ['œ'],                                         'replace ' => 'oe'];
+        $searchReplace[] = ['search' => ['ŕ', 'ŗ', 'ř'],                               'replace ' => 'r'];
+        $searchReplace[] = ['search' => ['š', 'ś', 'ŝ', 'ş', 'ſ'],                     'replace ' => 's'];
+        $searchReplace[] = ['search' => ['ţ', 'ť', 'ŧ'],                               'replace ' => 't'];
+        $searchReplace[] = ['search' => ['þ'],                                         'replace ' => 'th']; // thorn
+        $searchReplace[] = ['search' => ['ù', 'û', 'ú', 'ũ', 'ū', 'ŭ', 'ů', 'ű', 'ų'], 'replace ' => 'u'];
+        $searchReplace[] = ['search' => ['ŵ'],                                         'replace ' => 'w'];
+        $searchReplace[] = ['search' => ['ÿ', 'ý', 'ŷ'],                               'replace ' => 'y'];
+        $searchReplace[] = ['search' => ['ž', 'ź', 'ż'],                               'replace ' => 'z'];
+    }
+
+    private function addReplacementsUppercase(array &$searchReplace): void {
+        // UMLAUT
+        $searchReplace[] = ['search' => 'Ä', 'replace' => 'Ae'];
+        $searchReplace[] = ['search' => 'Ö', 'replace' => 'Oe'];
+        $searchReplace[] = ['search' => 'Ü', 'replace' => 'Ue'];
+
+        // LETTERS
+        $searchReplace[] = ['search' => ['À', 'Â', 'Á', 'Ã', 'Å', 'Æ', 'Ā', 'Ă', 'Ą'], 'replace ' => 'A'];
+        $searchReplace[] = ['search' => ['Ç', 'Ć', 'Ĉ', 'Ċ', 'Č'],                     'replace ' => 'C'];
+        $searchReplace[] = ['search' => ['Ď', 'Đ'],                                    'replace ' => 'D'];
+        $searchReplace[] = ['search' => ['Ð'],                                         'replace ' => 'D']; // Eth
+        $searchReplace[] = ['search' => ['È', 'Ê', 'É', 'Ë', 'Ē', 'Ĕ', 'Ė', 'Ę', 'Ě'], 'replace ' => 'E'];
+        $searchReplace[] = ['search' => ['Ĝ', 'Ğ', 'Ġ', 'Ģ'],                          'replace ' => 'G'];
+        $searchReplace[] = ['search' => ['Ĥ', 'Ħ'],                                    'replace ' => 'H'];
+        $searchReplace[] = ['search' => ['Ì', 'Î', 'Í', 'Ĩ', 'Ï', 'Ī', 'Ĭ', 'Į', 'İ'], 'replace ' => 'I'];
+        $searchReplace[] = ['search' => ['Ĳ'],                                         'replace ' => 'IJ'];
+        $searchReplace[] = ['search' => ['Ĵ'],                                         'replace ' => 'J'];
+        $searchReplace[] = ['search' => ['Ķ'],                                         'replace ' => 'K'];
+        $searchReplace[] = ['search' => ['Ĺ', 'Ļ', 'Ľ', 'Ŀ', 'Ł'],                     'replace ' => 'L'];
+        $searchReplace[] = ['search' => ['Ñ', 'Ń', 'Ņ', 'Ň', 'Ŋ'],                     'replace ' => 'N'];
+        $searchReplace[] = ['search' => ['Ò', 'Ô', 'Ó', 'Õ', 'Ø', 'Ō', 'Ŏ', 'Ő'],      'replace ' => 'O'];
+        $searchReplace[] = ['search' => ['Œ'],                                         'replace ' => 'Oe'];
+        $searchReplace[] = ['search' => ['Ŕ', 'Ŗ', 'Ř'],                               'replace ' => 'R'];
+        $searchReplace[] = ['search' => ['Š', 'Ś', 'Ŝ', 'Ş'],                          'replace ' => 'S'];
+        $searchReplace[] = ['search' => ['Ţ', 'Ť', 'Ŧ'],                               'replace ' => 'T'];
+        $searchReplace[] = ['search' => ['Þ'],                                         'replace ' => 'TH']; // Thorn
+        $searchReplace[] = ['search' => ['Ù', 'Û', 'Ú', 'Ũ', 'Ū', 'Ŭ', 'Ů', 'Ű', 'Ų'], 'replace ' => 'U'];
+        $searchReplace[] = ['search' => ['Ŵ'],                                         'replace ' => 'W'];
+        $searchReplace[] = ['search' => ['Ý', 'Ŷ', 'Ÿ'],                               'replace ' => 'Y'];
+        $searchReplace[] = ['search' => ['Ž', 'Ź', 'Ż'],                               'replace ' => 'Z'];
+    }
+
 }
