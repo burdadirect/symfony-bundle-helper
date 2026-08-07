@@ -39,7 +39,7 @@
   "require-dev": {
     "burdadirect/codestyle": "dev-main",
     "roave/security-advisories": "dev-latest",
-    "phpunit/phpunit" : "^13.0",
+    "phpunit/phpunit" : "^12.5",
     "symfony/phpunit-bridge": "^7.0"
   },
   "config": {
