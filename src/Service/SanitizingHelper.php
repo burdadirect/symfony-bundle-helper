@@ -263,31 +263,31 @@ class SanitizingHelper
         $searchReplace[] = ['search' => 'ß', 'replace' => 'ss'];
 
         // LETTERS
-        $searchReplace[] = ['search' => ['à', 'â', 'á', 'ã', 'å', 'æ', 'ā', 'ă', 'ą'], 'replace ' => 'a'];
-        $searchReplace[] = ['search' => ['þ'],                                         'replace ' => 'b'];
-        $searchReplace[] = ['search' => ['ç', 'ć', 'ĉ', 'ċ', 'č'],                     'replace ' => 'c'];
-        $searchReplace[] = ['search' => ['ď', 'đ', 'ð'],                               'replace ' => 'd'];
-        $searchReplace[] = ['search' => ['ð'],                                         'replace ' => 'd']; // eth
-        $searchReplace[] = ['search' => ['è', 'ê', 'é', 'ë', 'ē', 'ĕ', 'ė', 'ę', 'ě'], 'replace ' => 'e'];
-        $searchReplace[] = ['search' => ['ƒ'],                                         'replace ' => 'f'];
-        $searchReplace[] = ['search' => ['ĝ', 'ğ', 'ġ', 'ģ'],                          'replace ' => 'g'];
-        $searchReplace[] = ['search' => ['ĥ', 'ħ'],                                    'replace ' => 'h'];
-        $searchReplace[] = ['search' => ['ì', 'î', 'í', 'ĩ', 'ï', 'ī', 'ĭ', 'į', 'ı'], 'replace ' => 'i'];
-        $searchReplace[] = ['search' => ['ĳ'],                                         'replace ' => 'ij'];
-        $searchReplace[] = ['search' => ['ĵ'],                                         'replace ' => 'j'];
-        $searchReplace[] = ['search' => ['ķ', 'ĸ'],                                    'replace ' => 'k'];
-        $searchReplace[] = ['search' => ['ĺ', 'ļ', 'ľ', 'ŀ', 'ł'],                     'replace ' => 'l'];
-        $searchReplace[] = ['search' => ['ñ', 'ń', 'ņ', 'ň', 'ŉ', 'ŋ'],                'replace ' => 'n'];
-        $searchReplace[] = ['search' => ['ò', 'ô', 'ó', 'õ', 'ø', 'ō', 'ŏ', 'ő'],      'replace ' => 'o'];
-        $searchReplace[] = ['search' => ['œ'],                                         'replace ' => 'oe'];
-        $searchReplace[] = ['search' => ['ŕ', 'ŗ', 'ř'],                               'replace ' => 'r'];
-        $searchReplace[] = ['search' => ['š', 'ś', 'ŝ', 'ş', 'ſ'],                     'replace ' => 's'];
-        $searchReplace[] = ['search' => ['ţ', 'ť', 'ŧ'],                               'replace ' => 't'];
-        $searchReplace[] = ['search' => ['þ'],                                         'replace ' => 'th']; // thorn
-        $searchReplace[] = ['search' => ['ù', 'û', 'ú', 'ũ', 'ū', 'ŭ', 'ů', 'ű', 'ų'], 'replace ' => 'u'];
-        $searchReplace[] = ['search' => ['ŵ'],                                         'replace ' => 'w'];
-        $searchReplace[] = ['search' => ['ÿ', 'ý', 'ŷ'],                               'replace ' => 'y'];
-        $searchReplace[] = ['search' => ['ž', 'ź', 'ż'],                               'replace ' => 'z'];
+        $searchReplace[] = ['search' => ['à', 'â', 'á', 'ã', 'å', 'æ', 'ā', 'ă', 'ą'], 'replace' => 'a'];
+        $searchReplace[] = ['search' => ['þ'],                                         'replace' => 'b'];
+        $searchReplace[] = ['search' => ['ç', 'ć', 'ĉ', 'ċ', 'č'],                     'replace' => 'c'];
+        $searchReplace[] = ['search' => ['ď', 'đ', 'ð'],                               'replace' => 'd'];
+        $searchReplace[] = ['search' => ['ð'],                                         'replace' => 'd']; // eth
+        $searchReplace[] = ['search' => ['è', 'ê', 'é', 'ë', 'ē', 'ĕ', 'ė', 'ę', 'ě'], 'replace' => 'e'];
+        $searchReplace[] = ['search' => ['ƒ'],                                         'replace' => 'f'];
+        $searchReplace[] = ['search' => ['ĝ', 'ğ', 'ġ', 'ģ'],                          'replace' => 'g'];
+        $searchReplace[] = ['search' => ['ĥ', 'ħ'],                                    'replace' => 'h'];
+        $searchReplace[] = ['search' => ['ì', 'î', 'í', 'ĩ', 'ï', 'ī', 'ĭ', 'į', 'ı'], 'replace' => 'i'];
+        $searchReplace[] = ['search' => ['ĳ'],                                         'replace' => 'ij'];
+        $searchReplace[] = ['search' => ['ĵ'],                                         'replace' => 'j'];
+        $searchReplace[] = ['search' => ['ķ', 'ĸ'],                                    'replace' => 'k'];
+        $searchReplace[] = ['search' => ['ĺ', 'ļ', 'ľ', 'ŀ', 'ł'],                     'replace' => 'l'];
+        $searchReplace[] = ['search' => ['ñ', 'ń', 'ņ', 'ň', 'ŉ', 'ŋ'],                'replace' => 'n'];
+        $searchReplace[] = ['search' => ['ò', 'ô', 'ó', 'õ', 'ø', 'ō', 'ŏ', 'ő'],      'replace' => 'o'];
+        $searchReplace[] = ['search' => ['œ'],                                         'replace' => 'oe'];
+        $searchReplace[] = ['search' => ['ŕ', 'ŗ', 'ř'],                               'replace' => 'r'];
+        $searchReplace[] = ['search' => ['š', 'ś', 'ŝ', 'ş', 'ſ'],                     'replace' => 's'];
+        $searchReplace[] = ['search' => ['ţ', 'ť', 'ŧ'],                               'replace' => 't'];
+        $searchReplace[] = ['search' => ['þ'],                                         'replace' => 'th']; // thorn
+        $searchReplace[] = ['search' => ['ù', 'û', 'ú', 'ũ', 'ū', 'ŭ', 'ů', 'ű', 'ų'], 'replace' => 'u'];
+        $searchReplace[] = ['search' => ['ŵ'],                                         'replace' => 'w'];
+        $searchReplace[] = ['search' => ['ÿ', 'ý', 'ŷ'],                               'replace' => 'y'];
+        $searchReplace[] = ['search' => ['ž', 'ź', 'ż'],                               'replace' => 'z'];
     }
 
     private function addReplacementsUppercase(array &$searchReplace): void {
@@ -297,29 +297,29 @@ class SanitizingHelper
         $searchReplace[] = ['search' => 'Ü', 'replace' => 'Ue'];
 
         // LETTERS
-        $searchReplace[] = ['search' => ['À', 'Â', 'Á', 'Ã', 'Å', 'Æ', 'Ā', 'Ă', 'Ą'], 'replace ' => 'A'];
-        $searchReplace[] = ['search' => ['Ç', 'Ć', 'Ĉ', 'Ċ', 'Č'],                     'replace ' => 'C'];
-        $searchReplace[] = ['search' => ['Ď', 'Đ'],                                    'replace ' => 'D'];
-        $searchReplace[] = ['search' => ['Ð'],                                         'replace ' => 'D']; // Eth
-        $searchReplace[] = ['search' => ['È', 'Ê', 'É', 'Ë', 'Ē', 'Ĕ', 'Ė', 'Ę', 'Ě'], 'replace ' => 'E'];
-        $searchReplace[] = ['search' => ['Ĝ', 'Ğ', 'Ġ', 'Ģ'],                          'replace ' => 'G'];
-        $searchReplace[] = ['search' => ['Ĥ', 'Ħ'],                                    'replace ' => 'H'];
-        $searchReplace[] = ['search' => ['Ì', 'Î', 'Í', 'Ĩ', 'Ï', 'Ī', 'Ĭ', 'Į', 'İ'], 'replace ' => 'I'];
-        $searchReplace[] = ['search' => ['Ĳ'],                                         'replace ' => 'IJ'];
-        $searchReplace[] = ['search' => ['Ĵ'],                                         'replace ' => 'J'];
-        $searchReplace[] = ['search' => ['Ķ'],                                         'replace ' => 'K'];
-        $searchReplace[] = ['search' => ['Ĺ', 'Ļ', 'Ľ', 'Ŀ', 'Ł'],                     'replace ' => 'L'];
-        $searchReplace[] = ['search' => ['Ñ', 'Ń', 'Ņ', 'Ň', 'Ŋ'],                     'replace ' => 'N'];
-        $searchReplace[] = ['search' => ['Ò', 'Ô', 'Ó', 'Õ', 'Ø', 'Ō', 'Ŏ', 'Ő'],      'replace ' => 'O'];
-        $searchReplace[] = ['search' => ['Œ'],                                         'replace ' => 'Oe'];
-        $searchReplace[] = ['search' => ['Ŕ', 'Ŗ', 'Ř'],                               'replace ' => 'R'];
-        $searchReplace[] = ['search' => ['Š', 'Ś', 'Ŝ', 'Ş'],                          'replace ' => 'S'];
-        $searchReplace[] = ['search' => ['Ţ', 'Ť', 'Ŧ'],                               'replace ' => 'T'];
-        $searchReplace[] = ['search' => ['Þ'],                                         'replace ' => 'TH']; // Thorn
-        $searchReplace[] = ['search' => ['Ù', 'Û', 'Ú', 'Ũ', 'Ū', 'Ŭ', 'Ů', 'Ű', 'Ų'], 'replace ' => 'U'];
-        $searchReplace[] = ['search' => ['Ŵ'],                                         'replace ' => 'W'];
-        $searchReplace[] = ['search' => ['Ý', 'Ŷ', 'Ÿ'],                               'replace ' => 'Y'];
-        $searchReplace[] = ['search' => ['Ž', 'Ź', 'Ż'],                               'replace ' => 'Z'];
+        $searchReplace[] = ['search' => ['À', 'Â', 'Á', 'Ã', 'Å', 'Æ', 'Ā', 'Ă', 'Ą'], 'replace' => 'A'];
+        $searchReplace[] = ['search' => ['Ç', 'Ć', 'Ĉ', 'Ċ', 'Č'],                     'replace' => 'C'];
+        $searchReplace[] = ['search' => ['Ď', 'Đ'],                                    'replace' => 'D'];
+        $searchReplace[] = ['search' => ['Ð'],                                         'replace' => 'D']; // Eth
+        $searchReplace[] = ['search' => ['È', 'Ê', 'É', 'Ë', 'Ē', 'Ĕ', 'Ė', 'Ę', 'Ě'], 'replace' => 'E'];
+        $searchReplace[] = ['search' => ['Ĝ', 'Ğ', 'Ġ', 'Ģ'],                          'replace' => 'G'];
+        $searchReplace[] = ['search' => ['Ĥ', 'Ħ'],                                    'replace' => 'H'];
+        $searchReplace[] = ['search' => ['Ì', 'Î', 'Í', 'Ĩ', 'Ï', 'Ī', 'Ĭ', 'Į', 'İ'], 'replace' => 'I'];
+        $searchReplace[] = ['search' => ['Ĳ'],                                         'replace' => 'IJ'];
+        $searchReplace[] = ['search' => ['Ĵ'],                                         'replace' => 'J'];
+        $searchReplace[] = ['search' => ['Ķ'],                                         'replace' => 'K'];
+        $searchReplace[] = ['search' => ['Ĺ', 'Ļ', 'Ľ', 'Ŀ', 'Ł'],                     'replace' => 'L'];
+        $searchReplace[] = ['search' => ['Ñ', 'Ń', 'Ņ', 'Ň', 'Ŋ'],                     'replace' => 'N'];
+        $searchReplace[] = ['search' => ['Ò', 'Ô', 'Ó', 'Õ', 'Ø', 'Ō', 'Ŏ', 'Ő'],      'replace' => 'O'];
+        $searchReplace[] = ['search' => ['Œ'],                                         'replace' => 'Oe'];
+        $searchReplace[] = ['search' => ['Ŕ', 'Ŗ', 'Ř'],                               'replace' => 'R'];
+        $searchReplace[] = ['search' => ['Š', 'Ś', 'Ŝ', 'Ş'],                          'replace' => 'S'];
+        $searchReplace[] = ['search' => ['Ţ', 'Ť', 'Ŧ'],                               'replace' => 'T'];
+        $searchReplace[] = ['search' => ['Þ'],                                         'replace' => 'TH']; // Thorn
+        $searchReplace[] = ['search' => ['Ù', 'Û', 'Ú', 'Ũ', 'Ū', 'Ŭ', 'Ů', 'Ű', 'Ų'], 'replace' => 'U'];
+        $searchReplace[] = ['search' => ['Ŵ'],                                         'replace' => 'W'];
+        $searchReplace[] = ['search' => ['Ý', 'Ŷ', 'Ÿ'],                               'replace' => 'Y'];
+        $searchReplace[] = ['search' => ['Ž', 'Ź', 'Ż'],                               'replace' => 'Z'];
     }
 
 }
