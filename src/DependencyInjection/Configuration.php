@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * This is the class that validates and merges configuration from your app/config files
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
+ * To learn more, see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
@@ -41,12 +41,6 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('screenshotlayer')->addDefaultsIfNotSet()
               ->children()
                 ->scalarNode('accesskey')->defaultValue('')->end()
-              ->end()
-            ->end()
-            ->arrayNode('webshrinker')->addDefaultsIfNotSet()
-              ->children()
-                ->scalarNode('access_key')->defaultValue('')->end()
-                ->scalarNode('secret_key')->defaultValue('')->end()
               ->end()
             ->end()
 

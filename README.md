@@ -46,10 +46,6 @@ hbm_helper:
       url:
       route:
 
-  webshrinker:
-    access_key:
-    secret_key:
-
   screenshotapi:
     apikey:
 

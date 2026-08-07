@@ -4,21 +4,14 @@ namespace HBM\HelperBundle\Service;
 
 class HmacHelper
 {
-    /** @var array */
-    private $config;
+    private array $config;
 
-    /**
-     * HmacHelper constructor.
-     */
     public function __construct($config)
     {
         $this->config = $config;
     }
 
-    /**
-     * @param array|string $varToSign
-     */
-    public function sign($varToSign, ?string $secret = null, ?string $sep = "\n"): string
+    public function sign(array|string $varToSign, ?string $secret = null, ?string $sep = "\n"): string
     {
         $stringToSign = $varToSign;
 
@@ -35,11 +28,7 @@ class HmacHelper
         return base64_encode(hash_hmac('sha256', $stringToSign, $secretToUse, true));
     }
 
-    /**
-     * @param array|string varToSign
-     * @param array|string $secretData
-     */
-    public function signWithSecretData($varToSign, $secretData): string
+    public function signWithSecretData(array|string $varToSign, array|string $secretData): string
     {
         if (is_array($secretData)) {
             $secret = $secretData['secret'];

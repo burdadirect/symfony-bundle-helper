@@ -30,14 +30,6 @@ services:
         alias: HBM\HelperBundle\Service\Screenshot\ScreenshotLayerHelper
 
     ############################################################################
-
-    HBM\HelperBundle\Service\Screenshot\WebshrinkerHelper:
-        arguments: ["%hbm.helper.webshrinker%"]
-
-    hbm.helper.webshrinker:
-        alias: HBM\HelperBundle\Service\Screenshot\WebshrinkerHelper
-
-    ############################################################################
     # HELPER                                                                   #
     ############################################################################
 

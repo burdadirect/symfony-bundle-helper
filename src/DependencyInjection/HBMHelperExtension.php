@@ -10,12 +10,12 @@ use Symfony\Component\DependencyInjection\Loader;
 /**
  * This is the class that loads and manages your bundle configuration
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * To learn more, see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
 class HBMHelperExtension extends Extension
 {
     /**
-     * {@inheritdoc}
+     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -27,7 +27,6 @@ class HBMHelperExtension extends Extension
         $container->setParameter('hbm.helper.blitline', $configToUse['blitline']);
         $container->setParameter('hbm.helper.screenshotapi', $configToUse['screenshotapi']);
         $container->setParameter('hbm.helper.screenshotlayer', $configToUse['screenshotlayer']);
-        $container->setParameter('hbm.helper.webshrinker', $configToUse['webshrinker']);
 
         $container->setParameter('hbm.helper.bitly', $configToUse['bitly']);
         $container->setParameter('hbm.helper.hmac', $configToUse['hmac']);

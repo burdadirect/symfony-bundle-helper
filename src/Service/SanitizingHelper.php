@@ -7,20 +7,13 @@ namespace HBM\HelperBundle\Service;
  */
 class SanitizingHelper
 {
-    /** @var array */
-    private $config;
+    private array $config;
 
-    /**
-     * SanitizingHelper constructor.
-     */
     public function __construct(array $config)
     {
         $this->config = $config;
     }
 
-    /**
-     * @return mixed
-     */
     private function lang(?string $lang): ?string
     {
         if ($lang === null) {
@@ -35,9 +28,6 @@ class SanitizingHelper
         return $this->config['sep'];
     }
 
-    /**
-     * Repair html.
-     */
     public function repairHtml(?string $html, array $options = []): string
     {
         $defaultOptions = [
@@ -51,15 +41,11 @@ class SanitizingHelper
 
         $mergedOptions = array_merge($defaultOptions, $options);
 
-        $tidy     = new \tidy();
-        $htmlTidy = $tidy->repairString($html, $mergedOptions, 'UTF8');
+        $htmlTidy = \tidy::repairString($html, $mergedOptions, 'UTF8') ?: '';
 
         return str_replace("\r\n", "\n", trim($htmlTidy));
     }
 
-    /**
-     * Ensures folder sep according to arguments.
-     */
     public function ensureSep(?string $path, ?bool $leading = null, ?bool $trailing = null): string
     {
         if ($leading !== null) {
@@ -130,7 +116,7 @@ class SanitizingHelper
     }
 
     /**
-     * Replace windows folder delimiter.
+     * Replace Windows folder delimiter.
      */
     public function unifySep(?string $path): string
     {
@@ -158,20 +144,16 @@ class SanitizingHelper
 
     /**
      * Returns a string where all invalid chars have been sanitized.
-     *
-     * @param null|string $string
      */
-    public function sanitizeString(?string $string, bool $with_slash = false, bool $case_sensitive = false, ?string $lang = null): string
+    public function sanitizeString(?string $string, bool $with_slash = false, bool $case_sensitive = false, ?string $lang = null): ?string
     {
         return $this->sanitizeChars($string, $with_slash, $case_sensitive, $this->lang($lang));
     }
 
     /**
      * Returns a lowercase string where all invalid chars have been sanitized.
-     *
-     * @param string $lang
      */
-    public function slug($string, $lang = null): string
+    public function slug(?string $string, ?string $lang = null): string
     {
         return $this->sanitizeString($string, false, false, $this->lang($lang));
     }
@@ -204,7 +186,7 @@ class SanitizingHelper
         if (!$caseSensitive) {
             $string = mb_strtolower($string, 'UTF-8');
         } else {
-            $string = utf8_encode($string);
+            $string = mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
         }
 
         if (!$withSlash) {

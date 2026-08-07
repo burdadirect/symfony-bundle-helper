@@ -34,13 +34,13 @@
     "symfony/framework-bundle": "^7.0",
     "symfony/twig-bundle": "^7.0",
     "aws/aws-sdk-php": "^3.52",
-    "guzzlehttp/guzzle": "^7.0"
+    "guzzlehttp/guzzle": "^8.0"
   },
   "require-dev": {
     "burdadirect/codestyle": "dev-main",
     "roave/security-advisories": "dev-latest",
-    "phpunit/phpunit" : "^9.5",
-    "symfony/phpunit-bridge": "^6.0"
+    "phpunit/phpunit" : "^13.0",
+    "symfony/phpunit-bridge": "^7.0"
   },
   "config": {
     "allow-plugins": {

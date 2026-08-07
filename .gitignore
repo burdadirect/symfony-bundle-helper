@@ -3,6 +3,9 @@
 /composer.phar
 /vendor/
 
+# PHPUNIT
+phpunit.xml
+.phpunit.result.cache
 
 # PHPSTORM
 /.idea/*

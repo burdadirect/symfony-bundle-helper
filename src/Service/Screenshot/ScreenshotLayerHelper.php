@@ -7,33 +7,24 @@ use Psr\Http\Message\ResponseInterface;
 
 class ScreenshotLayerHelper
 {
-    /** @var array */
-    private $config;
+    private array $config;
+    private Client $client;
 
-    /** @var Client */
-    private $client;
-
-    /**
-     * ScreenshotLayerHelper constructor.
-     */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->config = $config;
     }
 
     private function getClient(): Client
     {
-        if ($this->client === null) {
+        if (!isset($this->client)) {
             $this->client = new Client(['base_uri' => 'https://api.screenshotlayer.com/api']);
         }
 
         return $this->client;
     }
 
-    /**
-     * @return null|mixed|ResponseInterface
-     */
-    public function capture($url, array $options = [])
+    public function capture(string $url, array $options = []): ?ResponseInterface
     {
         $query = array_merge($options, [
           'access_key' => $this->config['accesskey'],

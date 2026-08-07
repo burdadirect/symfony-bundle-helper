@@ -11,22 +11,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 class BlitlineHelper
 {
-    /** @var array */
-    private $config;
+    private array $config;
+    private S3Helper $s3;
+    private HmacHelper $hmac;
+    private RouterInterface $router;
 
-    /** @var S3Helper */
-    private $s3;
-
-    /** @var HmacHelper */
-    private $hmac;
-
-    /** @var RouterInterface */
-    private $router;
-
-    /**
-     * BlitlineHelper constructor.
-     */
-    public function __construct($config, S3Helper $s3, HmacHelper $hmac, RouterInterface $router)
+    public function __construct(array $config, S3Helper $s3, HmacHelper $hmac, RouterInterface $router)
     {
         $this->config = $config;
         $this->s3     = $s3;
@@ -35,14 +25,11 @@ class BlitlineHelper
     }
 
     /**
-     * @param string $viewport
-     * @param int    $delay
-     *
      * @throws InvalidParameterException
      * @throws RouteNotFoundException
      * @throws MissingMandatoryParametersException
      */
-    public function screenshot($postbackData, $url, $path, $viewport = '1200x800', $delay = 2000): array
+    public function screenshot(array $postbackData, string $url, string $path, string $viewport = '1200x800', int $delay = 2000): array
     {
         $request = [
           'src'      => $url,
@@ -85,7 +72,7 @@ class BlitlineHelper
      * @throws RouteNotFoundException
      * @throws MissingMandatoryParametersException
      */
-    public function process($postbackData, &$request)
+    public function process(array $postbackData, array &$request)
     {
         $request['application_id'] = $this->config['appid'];
 
@@ -98,7 +85,7 @@ class BlitlineHelper
 
         $http_query = http_build_query(['json' => json_encode($request)]);
         $ch         = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://api.blitline.com/job');
+        curl_setopt($ch, CURLOPT_URL, 'https://api.blitline.com/job');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $http_query);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

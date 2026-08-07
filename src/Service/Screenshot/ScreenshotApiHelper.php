@@ -7,15 +7,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class ScreenshotApiHelper
 {
-    /** @var array */
-    private $config;
+    private array $config;
+    private Client $client;
 
-    /** @var Client */
-    private $client;
-
-    /**
-     * ScreenshotApiHelper constructor.
-     */
     public function __construct($config)
     {
         $this->config = $config;
@@ -23,7 +17,7 @@ class ScreenshotApiHelper
 
     private function getClient(): Client
     {
-        if ($this->client === null) {
+        if (!isset($this->client)) {
             $this->client = new Client(['base_uri' => 'https://api.screenshotapi.io/']);
         }
 
@@ -88,10 +82,8 @@ class ScreenshotApiHelper
      * 'lg_g_watch',
      * 'lg_g_watch_r',
      * 'moto_360'
-     *
-     * @return null|mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function capture($url, array $options = [], ?array &$data = null)
+    public function capture(string $url, array $options = [], ?array &$data = null): ?ResponseInterface
     {
         $options['url'] = $url;
 
@@ -117,13 +109,13 @@ class ScreenshotApiHelper
                 'POST',
                 'capture',
                 [
-                'headers' => [
-                  'Content-Type' => 'application/json',
-                  'Accept'       => 'application/json',
-                  'apikey'       => $this->config['apikey'],
-                ],
-                'body' => json_encode($options),
-        ]
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Accept'       => 'application/json',
+                        'apikey'       => $this->config['apikey'],
+                    ],
+                    'body' => json_encode($options),
+                ]
             );
         } catch (\GuzzleHttp\Exception\GuzzleException) {
         }
@@ -137,10 +129,7 @@ class ScreenshotApiHelper
         return $response;
     }
 
-    /**
-     * @return null|mixed|\Psr\Http\Message\ResponseInterface
-     */
-    public function retrieve($key, ?array &$data = null)
+    public function retrieve(string $key, ?array &$data = null): ?ResponseInterface
     {
         $params = ['key' => $key];
 
