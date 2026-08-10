@@ -14,7 +14,7 @@ class SanitizingHelper
         $this->config = $config;
     }
 
-    private function lang(?string $lang): ?string
+    private function lang(?string $lang): string|bool|null
     {
         if ($lang === null) {
             $lang = $this->config['language'];
@@ -126,7 +126,7 @@ class SanitizingHelper
     /**
      * Returns a path where all string parts between the folder separator have been sanitized.
      */
-    public function sanitizePath(?string $path, bool $case_sensitive = false, ?string $lang = null): string
+    public function sanitizePath(?string $path, bool $case_sensitive = false, string|bool|null $lang = null): string
     {
         $path_parts = explode($this->sep(), $this->unifySep($path));
 
@@ -145,7 +145,7 @@ class SanitizingHelper
     /**
      * Returns a string where all invalid chars have been sanitized.
      */
-    public function sanitizeString(?string $string, bool $with_slash = false, bool $case_sensitive = false, ?string $lang = null): ?string
+    public function sanitizeString(?string $string, bool $with_slash = false, bool $case_sensitive = false, string|bool|null $lang = null): ?string
     {
         return $this->sanitizeChars($string, $with_slash, $case_sensitive, $this->lang($lang));
     }
@@ -153,7 +153,7 @@ class SanitizingHelper
     /**
      * Returns a lowercase string where all invalid chars have been sanitized.
      */
-    public function slug(?string $string, ?string $lang = null): string
+    public function slug(?string $string, string|bool|null $lang = null): string
     {
         return $this->sanitizeString($string, false, false, $this->lang($lang));
     }
@@ -163,7 +163,7 @@ class SanitizingHelper
      *
      * TODO: Continue at "Latin Extended-B" (character 384)
      */
-    private function sanitizeChars(?string $string, bool $withSlash = false, bool $caseSensitive = false, ?string $lang = null): string
+    private function sanitizeChars(?string $string, bool $withSlash = false, bool $caseSensitive = false, string|bool|null $lang = null): string
     {
         // Prepare string.
         if (!$caseSensitive) {
@@ -182,7 +182,9 @@ class SanitizingHelper
         $searchReplace   = [];
         $searchReplace[] = ['search' => ' ', 'replace' => '-'];
 
-        $this->addReplacementsLanguage($lang, $searchReplace);
+        if ($lang) {
+            $this->addReplacementsLanguage($searchReplace, $lang);
+        }
         $this->addReplacementsLowercase($searchReplace);
         if ($caseSensitive) {
             $this->addReplacementsUppercase($searchReplace);
@@ -227,7 +229,7 @@ class SanitizingHelper
         return implode('', $letters);
     }
 
-    private function addReplacementsLanguage(?string $lang, array &$searchReplace): void {
+    private function addReplacementsLanguage(array &$searchReplace, string $lang): void {
         if (!in_array($lang, ['de', 'en'], true)) {
             return;
         }
