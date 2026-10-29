@@ -33,6 +33,14 @@ services:
     # HELPER                                                                   #
     ############################################################################
 
+    HBM\HelperBundle\Service\S3Helper:
+        arguments: ["%hbm.helper.s3%"]
+
+    hbm.helper.s3:
+        alias: HBM\HelperBundle\Service\S3Helper
+
+    ############################################################################
+
     HBM\HelperBundle\Service\HmacHelper:
         arguments: ["%hbm.helper.hmac%"]
 
@@ -41,11 +49,13 @@ services:
 
     ############################################################################
 
-    HBM\HelperBundle\Service\S3Helper:
-        arguments: ["%hbm.helper.s3%"]
+    HBM\HelperBundle\Service\Aissist\AissistChatHttpService:
+        arguments:
+            $config: "%hbm.helper.aissist%"
 
-    hbm.helper.s3:
-        alias: HBM\HelperBundle\Service\S3Helper
+    HBM\HelperBundle\Service\Aissist\AissistTranscriptionService:
+        arguments:
+            $config: "%hbm.helper.aissist%"
 
     ############################################################################
 

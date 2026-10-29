@@ -34,12 +34,6 @@ With Symfony 4 the bundle is enabled automatically for all environments (see `co
 
 ```yml
 hbm_helper:
-  bitly:
-    client_id:
-    client_secret:
-    user_login:
-    user_password:
-
   blitline:
     appid:
     postback:
@@ -49,16 +43,8 @@ hbm_helper:
   screenshotapi:
     apikey:
 
-  cleverreach:
-    apikey:
-    listid:
-    formid:
-    source:
-    doi:
-      info:
-      data:
-    fields:
-      - {key: , value: }
+  screenshotlayer:
+    accesskey:
 
   hmac:
     secret:
@@ -69,4 +55,8 @@ hbm_helper:
   sanitizing:
     sep: '/'
     language: 'de'
+
+  aissist:
+    uri:
+    jwt:
 ```

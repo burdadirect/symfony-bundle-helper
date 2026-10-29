@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
           ->children()
+            // Screenshot Helpers
             ->arrayNode('blitline')->addDefaultsIfNotSet()
               ->children()
                 ->scalarNode('appid')->defaultValue('')->end()
@@ -33,32 +34,20 @@ class Configuration implements ConfigurationInterface
                 ->end()
               ->end()
             ->end()
+
             ->arrayNode('screenshotapi')->addDefaultsIfNotSet()
               ->children()
                 ->scalarNode('apikey')->defaultValue('')->end()
               ->end()
             ->end()
+
             ->arrayNode('screenshotlayer')->addDefaultsIfNotSet()
               ->children()
                 ->scalarNode('accesskey')->defaultValue('')->end()
               ->end()
             ->end()
 
-            ->arrayNode('bitly')
-              ->prototype('array')
-                ->children()
-                  ->scalarNode('client_id')->end()
-                  ->scalarNode('client_secret')->end()
-                  ->scalarNode('user_login')->end()
-                  ->scalarNode('user_password')->end()
-                ->end()
-              ->end()
-            ->end()
-            ->arrayNode('hmac')->addDefaultsIfNotSet()
-              ->children()
-                ->scalarNode('secret')->defaultValue('')->end()
-              ->end()
-            ->end()
+            // Misc helpers
             ->arrayNode('s3')
               ->prototype('array')
                 ->children()
@@ -70,12 +59,27 @@ class Configuration implements ConfigurationInterface
                 ->end()
               ->end()
             ->end()
+
+            ->arrayNode('hmac')->addDefaultsIfNotSet()
+              ->children()
+                ->scalarNode('secret')->defaultValue('')->end()
+              ->end()
+            ->end()
+
+            ->arrayNode('aissist')->addDefaultsIfNotSet()
+              ->children()
+                ->scalarNode('uri')->defaultValue('https://aissist-backend.bv.burda.com/')->end()
+                ->scalarNode('jwt')->defaultValue('')->end()
+              ->end()
+            ->end()
+
             ->arrayNode('sanitizing')->addDefaultsIfNotSet()
               ->children()
                 ->scalarNode('sep')->defaultValue('/')->end()
                 ->scalarNode('language')->defaultValue('de')->end()
               ->end()
             ->end()
+
           ->end()
         ->end();
 

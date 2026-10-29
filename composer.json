@@ -9,6 +9,10 @@
     {
       "type": "vcs",
       "url": "git@github.com:burdadirect/codestyle.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:burdadirect/symfony-bundle-basics.git"
     }
   ],
   "license": "MIT",
@@ -24,14 +28,16 @@
     }
   },
   "require": {
-    "php": "^8.2.0",
+    "php": "^8.4.0",
     "ext-curl" : "*",
     "ext-json" : "*",
     "ext-tidy" : "*",
     "ext-mbstring": "*",
+    "burdadirect/symfony-bundle-basics": "dev-main",
     "symfony/config": "^7.0",
     "symfony/dependency-injection": "^7.0",
     "symfony/framework-bundle": "^7.0",
+    "symfony/http-client": "^7.0",
     "symfony/twig-bundle": "^7.0",
     "aws/aws-sdk-php": "^3.52",
     "guzzlehttp/guzzle": "^7.0|^8.0"

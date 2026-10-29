@@ -28,9 +28,9 @@ class HBMHelperExtension extends Extension
         $container->setParameter('hbm.helper.screenshotapi', $configToUse['screenshotapi']);
         $container->setParameter('hbm.helper.screenshotlayer', $configToUse['screenshotlayer']);
 
-        $container->setParameter('hbm.helper.bitly', $configToUse['bitly']);
-        $container->setParameter('hbm.helper.hmac', $configToUse['hmac']);
         $container->setParameter('hbm.helper.s3', $configToUse['s3']);
+        $container->setParameter('hbm.helper.hmac', $configToUse['hmac']);
+        $container->setParameter('hbm.helper.aissist', $configToUse['aissist']);
         $container->setParameter('hbm.helper.sanitizing', $configToUse['sanitizing']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
