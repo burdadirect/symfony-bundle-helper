@@ -28,12 +28,12 @@ class AissistTranscriptionService extends AbstractAissistService
      *     part_size: int
      * }
      *
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     */
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+ */
     public function initUpload(string $filename, int $fileSize, string $contentType, ?int $numSpeakers = null, ?string $language = null, ?bool $diarization = true, ?bool $tagAudioEvents = true): ResultAissist
     {
         $body = [
