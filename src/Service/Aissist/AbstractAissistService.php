@@ -113,6 +113,27 @@ abstract class AbstractAissistService
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    protected function doUpload(string $uploadUrl, int|string $length, $resource): ResultAissist {
+        $client = HttpClient::create();
+        $response = $client->request('PUT', $uploadUrl, [
+          'headers' => [
+            'Content-Length' => (string) $length,
+          ],
+          'body' => $resource,
+        ]);
+
+        $successStatusCodes = fn (ResponseInterface $res) => ($res->getStatusCode() >= 200 && $res->getStatusCode() < 300);
+
+        return $this->handleResponse($response, $successStatusCodes, __CLASS__, __METHOD__, __LINE__);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      */

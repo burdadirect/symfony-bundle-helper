@@ -3,14 +3,12 @@
 namespace HBM\HelperBundle\Service\Aissist;
 
 use HBM\HelperBundle\Util\Result\ResultAissist;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class AissistTranscriptionService extends AbstractAissistService
 {
@@ -82,29 +80,8 @@ class AissistTranscriptionService extends AbstractAissistService
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    private function executeUploadPartial(string $uploadUrl, int|string $length, $resource): ResultAissist {
-        $client = HttpClient::create();
-        $response = $client->request('PUT', $uploadUrl, [
-          'headers' => [
-            'Content-Length' => (string) $length,
-          ],
-          'body' => $resource,
-        ]);
-
-        $successStatusCodes = fn (ResponseInterface $res) => ($res->getStatusCode() >= 200 && $res->getStatusCode() < 300);
-
-        return $this->handleResponse($response, $successStatusCodes, __CLASS__, __METHOD__, __LINE__);
-    }
-
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     private function executeUploadSingle(string $filepath, string $uploadUrl): ResultAissist {
-        return $this->executeUploadPartial($uploadUrl, filesize($filepath), fopen($filepath, 'rb'));
+        return $this->doUpload($uploadUrl, filesize($filepath), fopen($filepath, 'rb'));
     }
 
     /**
@@ -144,7 +121,7 @@ class AissistTranscriptionService extends AbstractAissistService
 
                 rewind($partStream);
 
-                $resultPartial = $this->executeUploadPartial($part['url'], $currentPartSize, $partStream);
+                $resultPartial = $this->doUpload($part['url'], $currentPartSize, $partStream);
                 $resultPartial->setData([
                   'part_number' => $part['part_number'],
                   'etag' => $resultPartial->getResponse()->getHeaders(false)['etag'][0] ?? null,

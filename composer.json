@@ -30,6 +30,7 @@
   "require": {
     "php": "^8.4.0",
     "ext-curl" : "*",
+    "ext-fileinfo": "*",
     "ext-json" : "*",
     "ext-tidy" : "*",
     "ext-mbstring": "*",

@@ -53,6 +53,10 @@ services:
         arguments:
             $config: "%hbm.helper.aissist%"
 
+    HBM\HelperBundle\Service\Aissist\AissistInputAssetService:
+        arguments:
+            $config: "%hbm.helper.aissist%"
+
     HBM\HelperBundle\Service\Aissist\AissistTranscriptionService:
         arguments:
             $config: "%hbm.helper.aissist%"
