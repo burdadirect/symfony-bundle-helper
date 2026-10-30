@@ -61,18 +61,19 @@ class AissistChatHttpService extends AbstractAissistService
     public function chatHttp(array $messages, array $inputAssetIds = [], ?string $provider = null, int $maxTokens = 4000): ResultAissist
     {
         $body = [
-          'provider' => $provider ?? $this->getProviderToUse(),
-          'messages' => $messages,
-
-            // Optional settings.
-          'max_tokens' => $maxTokens,
+            'provider' => $provider ?? $this->getProviderToUse(),
+            'messages' => $messages,
 
             // Deprecated but necessary settings.
-          'temperature' => 0.75,
-          'top_p' => 0.9,
-          'presence_penalty' => 0,
-          'frequency_penalty' => 0,
+            'temperature' => 0.75,
+            'top_p' => 0.9,
+            'presence_penalty' => 0,
+            'frequency_penalty' => 0,
         ];
+
+        if ($maxTokens) {
+            $body['max_tokens'] = $maxTokens;
+        }
 
         if (count($inputAssetIds) === 0) {
             $body['input_asset_ids'] = $inputAssetIds;
@@ -93,17 +94,17 @@ class AissistChatHttpService extends AbstractAissistService
     public function chatJson(array $messages, array $inputAssetIds = [], ?string $provider = null, int $maxTokens = 4000): ResultAissist
     {
         $body = [
-          'provider' => $provider ?? $this->getProviderToUse(),
-          'messages' => $messages,
+            'provider' => $provider ?? $this->getProviderToUse(),
+            'messages' => $messages,
 
             // Optional settings.
-          'max_tokens' => $maxTokens,
+            'max_tokens' => $maxTokens,
 
             // Deprecated but necessary settings.
-          'temperature' => 0.75,
-          'top_p' => 0.9,
-          'presence_penalty' => 0,
-          'frequency_penalty' => 0,
+            'temperature' => 0.75,
+            'top_p' => 0.9,
+            'presence_penalty' => 0,
+            'frequency_penalty' => 0,
         ];
 
         if (count($inputAssetIds) === 0) {
