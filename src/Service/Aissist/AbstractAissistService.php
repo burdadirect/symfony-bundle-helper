@@ -4,6 +4,7 @@ namespace HBM\HelperBundle\Service\Aissist;
 
 use HBM\BasicsBundle\Entity\Repository\Interfaces\SettingRepositoryInterface;
 use HBM\BasicsBundle\Traits\ServiceDependencies\ParameterBagDependencyTrait;
+use HBM\BasicsBundle\Util\Pinpoint;
 use HBM\BasicsBundle\Util\Total;
 use HBM\HelperBundle\Util\Result\ResultAissist;
 use Symfony\Component\HttpClient\HttpClient;
@@ -64,7 +65,7 @@ abstract class AbstractAissistService
     /**
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    protected function request(string $method, string|array $url, array $options = []): ResponseInterface {
+    protected function request(string $method, string|array $url, array $options = [], ?Pinpoint $pinpoint = null): ResponseInterface {
         $requestUrl = $totalUrl = $url;
         if (is_array($url)) {
             $requestUrl = vsprintf($url[0], $url[1]);
@@ -77,6 +78,8 @@ abstract class AbstractAissistService
             $this->total->note(1, get_class($this));
             $this->total->note(1, 'all');
         }
+
+        $this->logRequestToFile($requestUrl, $options, $pinpoint);
 
         return $this->getClient()->request($method, $requestUrl, $options);
     }
@@ -92,7 +95,7 @@ abstract class AbstractAissistService
     {
         $response = $this->request('GET', '/v1/chat/providers/'.$name);
 
-        return $this->handleResponse($response, [Response::HTTP_OK], __CLASS__, __METHOD__, __LINE__);
+        return $this->handleResponse($response, [Response::HTTP_OK], new Pinpoint(__CLASS__, __METHOD__, __LINE__));
     }
 
     /**
@@ -106,7 +109,7 @@ abstract class AbstractAissistService
     {
         $response = $this->request('GET', '/v1/chat/providers/');
 
-        return $this->handleResponse($response, [Response::HTTP_OK], __CLASS__, __METHOD__, __LINE__);
+        return $this->handleResponse($response, [Response::HTTP_OK], new Pinpoint(__CLASS__, __METHOD__, __LINE__));
     }
 
     /**
@@ -127,7 +130,7 @@ abstract class AbstractAissistService
 
         $successStatusCodes = fn (ResponseInterface $res) => ($res->getStatusCode() >= 200 && $res->getStatusCode() < 300);
 
-        return $this->handleResponse($response, $successStatusCodes, __CLASS__, __METHOD__, __LINE__);
+        return $this->handleResponse($response, $successStatusCodes, new Pinpoint(__CLASS__, __METHOD__, __LINE__));
     }
 
     /**
@@ -137,8 +140,8 @@ abstract class AbstractAissistService
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      */
-    protected function handleResponse(ResponseInterface $response, array|callable $successStatusCodes, ?string $class = null, ?string $method = null, ?int $line = null, ?ResultAissist $result = null, ?string $pinpoint = null): ResultAissist {
-        $this->logResponseToFile($response, $pinpoint ?? sprintf('%s::%s[%s]', $class, $method, $line));
+    protected function handleResponse(ResponseInterface $response, array|callable $successStatusCodes, Pinpoint $pinpoint, ?ResultAissist $result = null): ResultAissist {
+        $this->logResponseToFile($response, $pinpoint);
 
         $result = $result ?? new ResultAissist();
         $result->setResponse($response);
@@ -168,7 +171,7 @@ abstract class AbstractAissistService
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    protected function logResponseToFile(ResponseInterface $response, string $pinpoint, ?string $filePath = null): void
+    protected function logResponseToFile(ResponseInterface $response, ?Pinpoint $pinpoint = null, ?string $filePath = null): void
     {
         if (!$this->pb->get('kernel.debug')) {
             return;
@@ -180,10 +183,33 @@ abstract class AbstractAissistService
 
         $timestamp = new \DateTime()->format('Y-m-d H:i:s');
         $resource = fopen($filePath, 'ab');
-        fwrite($resource, sprintf('--- Response Start (%s)---: %s%s', $pinpoint, $timestamp, PHP_EOL));
+        fwrite($resource, sprintf('--- Response Start (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, sprintf('Status Code: %s%s', $response->getStatusCode(), PHP_EOL));
-        fwrite($resource, sprintf('Body: %s%s', $response->getContent(false), PHP_EOL));
-        fwrite($resource, sprintf('--- Response End (%s)---: %s%s', $pinpoint, $timestamp, PHP_EOL));
+        fwrite($resource, sprintf('Body: %s%s', json_encode(json_decode($response->getContent(false), true), JSON_PRETTY_PRINT),   PHP_EOL));
+        fwrite($resource, sprintf('--- Response End (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
+        fwrite($resource, PHP_EOL);
+        fclose($resource);
+    }
+
+    /**
+     * Simple helper to log to local file. Used for debugging/development purposes.
+     */
+    protected function logRequestToFile(string $requestUrl, array $options, ?Pinpoint $pinpoint = null, ?string $filePath = null): void
+    {
+        if (!$this->pb->get('kernel.debug')) {
+            return;
+        }
+
+        if ($filePath === null) {
+            $filePath = $this->pb->get('kernel.logs_dir') . '/aissist-service-requests.log';
+        }
+
+        $timestamp = new \DateTime()->format('Y-m-d H:i:s');
+        $resource = fopen($filePath, 'ab');
+        fwrite($resource, sprintf('--- Request Start (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
+        fwrite($resource, sprintf('Url: %s%s', $requestUrl, PHP_EOL));
+        fwrite($resource, sprintf('Body: %s%s', json_encode($options, JSON_PRETTY_PRINT), PHP_EOL));
+        fwrite($resource, sprintf('--- Request End (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, PHP_EOL);
         fclose($resource);
     }

@@ -2,6 +2,7 @@
 
 namespace HBM\HelperBundle\Service\Aissist;
 
+use HBM\BasicsBundle\Util\Pinpoint;
 use HBM\HelperBundle\Util\Result\ResultAissist;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -46,9 +47,11 @@ class AissistTranscriptionService extends AbstractAissistService
           'num_speakers' => $numSpeakers,
         ];
 
-        $response = $this->request('POST', '/v1/transcript/upload/init', ['json' => $body]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_CREATED], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('POST', '/v1/transcript/upload/init', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_CREATED], $pinpoint->setLine(__LINE__));
     }
 
     /**
@@ -170,9 +173,11 @@ class AissistTranscriptionService extends AbstractAissistService
             $body['parts'] = $partEtags;
         }
 
-        $response = $this->request('POST', '/v1/transcript/upload/complete', ['json' => $body]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_OK], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('POST', '/v1/transcript/upload/complete', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
     }
 
     /**
@@ -211,9 +216,11 @@ class AissistTranscriptionService extends AbstractAissistService
      */
     public function getTranscript(string $transcriptId): ResultAissist
     {
-        $response = $this->request('GET', ['/v1/transcript/%s', [$transcriptId]]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_OK], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('GET', ['/v1/transcript/%s', [$transcriptId]], [], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
     }
 
     /**
@@ -280,9 +287,11 @@ class AissistTranscriptionService extends AbstractAissistService
           'upload_id' => $uploadId,
         ];
 
-        $response = $this->request('DELETE', '/v1/transcript/upload/abort', ['json' => $body]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_NO_CONTENT], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('DELETE', '/v1/transcript/upload/abort', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_NO_CONTENT], $pinpoint->setLine(__LINE__));
     }
 
     /**
@@ -294,9 +303,11 @@ class AissistTranscriptionService extends AbstractAissistService
      */
     public function deleteTranscript(string $transcriptId): ResultAissist
     {
-        $response = $this->request('DELETE', ['/v1/transcript/%s', [$transcriptId]]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_NO_CONTENT], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('DELETE', ['/v1/transcript/%s', [$transcriptId]], [], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_NO_CONTENT], $pinpoint->setLine(__LINE__));
     }
 
 }

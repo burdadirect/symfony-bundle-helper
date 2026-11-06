@@ -2,15 +2,14 @@
 
 namespace HBM\HelperBundle\Service\Aissist;
 
+use HBM\BasicsBundle\Util\Pinpoint;
 use HBM\HelperBundle\Util\Result\ResultAissist;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class AissistInputAssetService extends AbstractAissistService
 {
@@ -29,17 +28,20 @@ class AissistInputAssetService extends AbstractAissistService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function initUpload(string $filename, ?int $fileSize = null, ?string $contentType = null): ResultAissist
+    public function initUpload(string $filename, ?int $fileSize = null, ?string $contentType = null, ?string $sessionId = null): ResultAissist
     {
         $body = [
           'filename' => basename($filename),
           'file_size' => $fileSize ?? filesize($filename),
           'content_type' => $contentType ?? mime_content_type($filename),
+          'session_id' => $sessionId ?? null,
         ];
 
-        $response = $this->request('POST', '/v1/input-asset/upload/init', ['json' => $body]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_CREATED], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('POST', '/v1/input-asset/upload/init', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_CREATED], $pinpoint->setLine(__LINE__));
     }
 
     /**
@@ -70,9 +72,11 @@ class AissistInputAssetService extends AbstractAissistService
           'input_asset_id' => $inputAssetId,
         ];
 
-        $response = $this->request('POST', '/v1/input-asset/upload/complete', ['json' => $body]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_OK], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('POST', '/v1/input-asset/upload/complete', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
     }
 
     /**
@@ -88,9 +92,11 @@ class AissistInputAssetService extends AbstractAissistService
           'input_asset_id' => $inputAssetId,
         ];
 
-        $response = $this->request('DELETE', '/v1/input-asset/upload/abort', ['json' => $body]);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_NO_CONTENT], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('DELETE', '/v1/input-asset/upload/abort', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_NO_CONTENT], $pinpoint->setLine(__LINE__));
     }
 
 }

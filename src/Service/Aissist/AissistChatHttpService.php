@@ -2,7 +2,7 @@
 
 namespace HBM\HelperBundle\Service\Aissist;
 
-use HBM\BasicsBundle\Util\Enum\SettingVarType;
+use HBM\BasicsBundle\Util\Pinpoint;
 use HBM\HelperBundle\Util\Result\ResultAissist;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -11,44 +11,33 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class AissistChatHttpService extends AbstractAissistService
+class AissistChatHttpService extends AbstractAissistChatService
 {
 
-    private ?string $providerToUse = null;
-
     /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
      */
-    public function getProviderToUse(): string
+    public function chatHttp(array $messages, array $inputAssetIds = [], ?string $provider = null, array $options = []): ResultAissist
     {
-        if (!isset($this->providerToUse)) {
-            $this->providerToUse = $this->settingRepositoryInterface->getVarValueParsed('provider_chat_http', 'aissist');
+        $body = [
+            'provider' => $provider ?? $this->getProviderToUse(),
+            'messages' => $messages,
+        ];
 
-            if (!$this->providerToUse) {
-                $resultProviders = $this->listProviders();
-                if ($resultProviders->getReturn()) {
-                    foreach ($resultProviders->getData() as $providerName => $providerData) {
-                        if ($providerData['default'] ?? false) {
-                            $this->providerToUse = $providerName;
-                            break;
-                        }
-                    }
-                }
-
-                if ($this->providerToUse) {
-                    $this->settingRepositoryInterface->findOrCreateOne('provider_chat_http', 'aissist', SettingVarType::STRING, $this->providerToUse, persistAndFlush: true);
-                }
-            }
-
-            if (!$this->providerToUse) {
-                throw new \RuntimeException('No provider found');
-            }
+        if (count($inputAssetIds) > 0) {
+            $body['input_asset_ids'] = $inputAssetIds;
         }
-        return $this->providerToUse;
+
+        $body = array_merge($this->defaults, $options, $body);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
+
+        $response = $this->request('POST', '/v1/chat/http', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
     }
 
     /**
@@ -58,62 +47,23 @@ class AissistChatHttpService extends AbstractAissistService
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      */
-    public function chatHttp(array $messages, array $inputAssetIds = [], ?string $provider = null, int $maxTokens = 4000): ResultAissist
+    public function chatJson(array $messages, array $inputAssetIds = [], ?string $provider = null, array $options = []): ResultAissist
     {
         $body = [
             'provider' => $provider ?? $this->getProviderToUse(),
             'messages' => $messages,
-
-            // Deprecated but necessary settings.
-            'temperature' => 0.75,
-            'top_p' => 0.9,
-            'presence_penalty' => 0,
-            'frequency_penalty' => 0,
-        ];
-
-        if ($maxTokens) {
-            $body['max_tokens'] = $maxTokens;
-        }
-
-        if (count($inputAssetIds) === 0) {
-            $body['input_asset_ids'] = $inputAssetIds;
-        }
-
-        $response = $this->request('POST', '/v1/chat/http', ['json' => $body]);
-
-        return $this->handleResponse($response, [Response::HTTP_OK], __CLASS__, __METHOD__, __LINE__);
-    }
-
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     */
-    public function chatJson(array $messages, array $inputAssetIds = [], ?string $provider = null, int $maxTokens = 4000): ResultAissist
-    {
-        $body = [
-            'provider' => $provider ?? $this->getProviderToUse(),
-            'messages' => $messages,
-
-            // Optional settings.
-            'max_tokens' => $maxTokens,
-
-            // Deprecated but necessary settings.
-            'temperature' => 0.75,
-            'top_p' => 0.9,
-            'presence_penalty' => 0,
-            'frequency_penalty' => 0,
         ];
 
         if (count($inputAssetIds) === 0) {
             $body['input_asset_ids'] = $inputAssetIds;
         }
 
-        $response = $this->request('POST', '/v1/chat/json', ['json' => $body]);
+        $body = array_merge($this->defaults, $options, $body);
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        return $this->handleResponse($response, [Response::HTTP_OK], __CLASS__, __METHOD__, __LINE__);
+        $response = $this->request('POST', '/v1/chat/json', ['json' => $body], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
     }
 
 }

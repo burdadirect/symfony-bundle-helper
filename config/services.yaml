@@ -49,6 +49,10 @@ services:
 
     ############################################################################
 
+    HBM\HelperBundle\Service\Aissist\AissistChatService:
+        arguments:
+            $config: "%hbm.helper.aissist%"
+
     HBM\HelperBundle\Service\Aissist\AissistChatHttpService:
         arguments:
             $config: "%hbm.helper.aissist%"
