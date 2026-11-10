@@ -140,7 +140,7 @@ class AissistPromptTemplateService extends AbstractAissistChatService
     {
         $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
-        $response = $this->request('POST', '/v1/prompt-template', ['json' => $templateData], $pinpoint->setLine(__LINE__));
+        $response = $this->request('POST', '/v1/prompt-template/', ['json' => $templateData], $pinpoint->setLine(__LINE__));
 
         return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
     }

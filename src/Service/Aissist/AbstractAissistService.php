@@ -185,7 +185,8 @@ abstract class AbstractAissistService
         $resource = fopen($filePath, 'ab');
         fwrite($resource, sprintf('--- Response Start (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, sprintf('Status Code: %s%s', $response->getStatusCode(), PHP_EOL));
-        fwrite($resource, sprintf('Body: %s%s', json_encode(json_decode($response->getContent(false), true), JSON_PRETTY_PRINT),   PHP_EOL));
+        fwrite($resource, sprintf('Header: %s%s', json_encode($response->getHeaders(false), JSON_PRETTY_PRINT), PHP_EOL));
+        fwrite($resource, sprintf('Body: %s%s', json_encode(json_decode($response->getContent(false), true), JSON_PRETTY_PRINT), PHP_EOL));
         fwrite($resource, sprintf('--- Response End (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, PHP_EOL);
         fclose($resource);
