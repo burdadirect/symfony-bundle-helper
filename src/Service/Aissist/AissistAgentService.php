@@ -55,7 +55,7 @@ class AissistAgentService extends AbstractAissistService
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      */
-    public function sendMessageToTemplate(string $templateId, array $messageParts, string $agentName = 'general-purpose'): ResultAissist
+    public function sendMessageToTemplate(string $templateId, array $messageParts, string $agentName = 'general-purpose', bool $skipGlobalSystemPrompt = true): ResultAissist
     {
         $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
@@ -72,9 +72,9 @@ class AissistAgentService extends AbstractAissistService
             ],
             'metadata' => [
               'templateId' => $templateId,
-                # The template is our complete instruction set, do not add the
-                # platform-wide default system prompt on top.
-              'skipGlobalSystemPrompt' => true,
+               # The template is our complete instruction set, do not add the
+               # platform-wide default system prompt on top.
+              'skipGlobalSystemPrompt' => $skipGlobalSystemPrompt,
             ]
           ],
         ];
