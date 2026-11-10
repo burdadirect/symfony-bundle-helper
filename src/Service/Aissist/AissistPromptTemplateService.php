@@ -15,20 +15,20 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  * @phpstan-type promptTemplateData array{
  *     name: string,
  *     type: string,
- *     description: string,
- *     hint: string,
- *     system_prompt: string,
- *     user_prompt: string,
- *     output_example: string,
+ *     description?: string,
+ *     hint?: string,
+ *     system_prompt?: string,
+ *     user_prompt?: string,
+ *     output_example?: string,
  *     provider: string,
- *     temperature: float,
- *     max_tokens: int,
- *     top_p: float,
- *     presence_penalty: float,
- *     frequency_penalty: float,
- *     reasoning_effort: string,
- *     allowed_tools: list<string>,
- *     knowledge_base_id: string|null
+ *     temperature?: float,
+ *     max_tokens?: int,
+ *     top_p?: float,
+ *     presence_penalty?: float,
+ *     frequency_penalty?: float,
+ *     reasoning_effort?: string,
+ *     allowed_tools?: list<string>,
+ *     knowledge_base_id?: string|null
  * }
  *
  * @phpstan-type promptTemplateInput array{
@@ -104,7 +104,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  *     scope: string
  * }
  */
-class AissistPromptTemplateService extends AbstractAissistService
+class AissistPromptTemplateService extends AbstractAissistChatService
 {
 
     /**
