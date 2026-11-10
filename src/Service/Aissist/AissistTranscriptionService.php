@@ -11,6 +11,34 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * @phpstan-type transcript array{
+ *      id: string,
+ *      user: string,
+ *      status: string,
+ *      provider: string,
+ *      language: string,
+ *      file_path: string,
+ *      status_url: string,
+ *      remote_url: string,
+ *      diarization: bool,
+ *      num_speakers: int,
+ *      tag_audio_events: bool,
+ *      text: string,
+ *      phrases: list<array{
+ *          type: string,
+ *          speaker: int,
+ *          offset: float|int,
+ *          duration: float|int,
+ *          text: string
+ *      }>,
+ *      error_details: string,
+ *      created_by: string,
+ *      modified_by: string,
+ *      created_at: string,
+ *      modified_at: string
+ *  }
+ */
 class AissistTranscriptionService extends AbstractAissistService
 {
 
@@ -34,7 +62,7 @@ class AissistTranscriptionService extends AbstractAissistService
      * @throws RedirectionExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
- */
+    */
     public function initUpload(string $filename, int $fileSize, string $contentType, ?int $numSpeakers = null, ?string $language = null, ?bool $diarization = true, ?bool $tagAudioEvents = true): ResultAissist
     {
         $body = [
@@ -181,97 +209,6 @@ class AissistTranscriptionService extends AbstractAissistService
     }
 
     /**
-     * @return ResultAissist{
-     *     id: string,
-     *     user: string,
-     *     status: string,
-     *     provider: string,
-     *     language: string,
-     *     file_path: string,
-     *     status_url: string,
-     *     remote_url: string,
-     *     diarization: bool,
-     *     num_speakers: int,
-     *     tag_audio_events: bool,
-     *     text: string,
-     *     phrases: list<array{
-     *         type: string,
-     *         speaker: int,
-     *         offset: float|int,
-     *         duration: float|int,
-     *         text: string
-     *     }>,
-     *     error_details: string,
-     *     created_by: string,
-     *     modified_by: string,
-     *     created_at: string,
-     *     modified_at: string
-     * }
-     *
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     */
-    public function getTranscript(string $transcriptId): ResultAissist
-    {
-        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
-
-        $response = $this->request('GET', ['/v1/transcript/%s', [$transcriptId]], [], $pinpoint->setLine(__LINE__));
-
-        return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
-    }
-
-    /**
-     * @return ResultAissist{
-     *      id: string,
-     *      user: string,
-     *      status: string,
-     *      provider: string,
-     *      language: string,
-     *      file_path: string,
-     *      status_url: string,
-     *      remote_url: string,
-     *      diarization: bool,
-     *      num_speakers: int,
-     *      tag_audio_events: bool,
-     *      text: string,
-     *      phrases: list<array{
-     *          type: string,
-     *          speaker: int,
-     *          offset: float|int,
-     *          duration: float|int,
-     *          text: string
-     *      }>,
-     *      error_details: string,
-     *      created_by: string,
-     *      modified_by: string,
-     *      created_at: string,
-     *      modified_at: string
-     *  }
-     *
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
-    public function pollTranscript(string $transcriptId, int $retriesRemaining = 10, int $retryDelay = 3, ?callable $retryCallback = null): ResultAissist {
-        $result = $this->getTranscript($transcriptId);
-        if (($retriesRemaining <= 0) || !$result->getReturn() || ($result['status'] === 'Succeeded')) {
-            return $result;
-        }
-
-        if ($retryCallback) {
-            $retryCallback($retriesRemaining, $retryDelay);
-        }
-
-        sleep($retryDelay);
-        return $this->pollTranscript($transcriptId, $retriesRemaining - 1, $retryDelay, $retryCallback);
-    }
-
-    /**
      * Only needed to be called for multipart uploads (single uploads don't receive an upload_id)
      *
      * @throws ClientExceptionInterface
@@ -292,6 +229,49 @@ class AissistTranscriptionService extends AbstractAissistService
         $response = $this->request('DELETE', '/v1/transcript/upload/abort', ['json' => $body], $pinpoint->setLine(__LINE__));
 
         return $this->handleResponse($response, [Response::HTTP_NO_CONTENT], $pinpoint->setLine(__LINE__));
+    }
+
+    /**************************************************************************/
+
+    /**
+     * @return ResultAissist{transcript}
+     *
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     */
+    public function getTranscript(string $transcriptId): ResultAissist
+    {
+        $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
+
+        $response = $this->request('GET', ['/v1/transcript/%s', [$transcriptId]], [], $pinpoint->setLine(__LINE__));
+
+        return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
+    }
+
+    /**
+     * @return ResultAissist{transcript}
+     *
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function pollTranscript(string $transcriptId, int $retriesRemaining = 10, int $retryDelay = 3, ?callable $retryCallback = null): ResultAissist {
+        $result = $this->getTranscript($transcriptId);
+        if (($retriesRemaining <= 0) || !$result->getReturn() || ($result['status'] === 'Succeeded')) {
+            return $result;
+        }
+
+        if ($retryCallback) {
+            $retryCallback($retriesRemaining, $retryDelay);
+        }
+
+        sleep($retryDelay);
+        return $this->pollTranscript($transcriptId, $retriesRemaining - 1, $retryDelay, $retryCallback);
     }
 
     /**
