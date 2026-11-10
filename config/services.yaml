@@ -49,19 +49,9 @@ services:
 
     ############################################################################
 
-    HBM\HelperBundle\Service\Aissist\AissistChatService:
-        arguments:
-            $config: "%hbm.helper.aissist%"
-
-    HBM\HelperBundle\Service\Aissist\AissistChatHttpService:
-        arguments:
-            $config: "%hbm.helper.aissist%"
-
-    HBM\HelperBundle\Service\Aissist\AissistInputAssetService:
-        arguments:
-            $config: "%hbm.helper.aissist%"
-
-    HBM\HelperBundle\Service\Aissist\AissistTranscriptionService:
+    HBM\HelperBundle\Service\Aissist\:
+        resource: '../src/Service/Aissist'
+        exclude:  '../src/Service/Aissist/**/Abstract*Service.php'
         arguments:
             $config: "%hbm.helper.aissist%"
 
