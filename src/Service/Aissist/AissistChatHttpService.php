@@ -11,10 +11,18 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * @phpstan-type message array{
+ *     role: string,
+ *     content: string
+ * }
+ */
 class AissistChatHttpService extends AbstractAissistChatService
 {
 
     /**
+     * @param message[] $messages
+     *
      * @throws RedirectionExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
@@ -41,6 +49,9 @@ class AissistChatHttpService extends AbstractAissistChatService
     }
 
     /**
+     *
+     * @param message[] $messages
+     * 
      * @throws RedirectionExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface

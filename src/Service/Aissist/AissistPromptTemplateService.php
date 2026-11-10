@@ -104,7 +104,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  *     scope: string
  * }
  */
-class AissistPromptTemplateService extends AbstractAissistChatService
+class AissistPromptTemplateService extends AbstractAissistService
 {
 
     /**

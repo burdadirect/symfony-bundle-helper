@@ -79,7 +79,7 @@ abstract class AbstractAissistService
             $this->total->note(1, 'all');
         }
 
-        $this->logRequestToFile($requestUrl, $options, $pinpoint);
+        $this->logRequestToFile($method, $requestUrl, $options, $pinpoint);
 
         return $this->getClient()->request($method, $requestUrl, $options);
     }
@@ -194,7 +194,7 @@ abstract class AbstractAissistService
     /**
      * Simple helper to log to local file. Used for debugging/development purposes.
      */
-    protected function logRequestToFile(string $requestUrl, array $options, ?Pinpoint $pinpoint = null, ?string $filePath = null): void
+    protected function logRequestToFile(string $method, string $requestUrl, array $options, ?Pinpoint $pinpoint = null, ?string $filePath = null): void
     {
         if (!$this->pb->get('kernel.debug')) {
             return;
@@ -207,7 +207,7 @@ abstract class AbstractAissistService
         $timestamp = new \DateTime()->format('Y-m-d H:i:s');
         $resource = fopen($filePath, 'ab');
         fwrite($resource, sprintf('--- Request Start (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
-        fwrite($resource, sprintf('Url: %s%s', $requestUrl, PHP_EOL));
+        fwrite($resource, sprintf('Url: %s %s%s', strtoupper($method), $requestUrl, PHP_EOL));
         fwrite($resource, sprintf('Body: %s%s', json_encode($options, JSON_PRETTY_PRINT), PHP_EOL));
         fwrite($resource, sprintf('--- Request End (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, PHP_EOL);

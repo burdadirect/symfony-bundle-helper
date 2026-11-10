@@ -41,7 +41,8 @@
     "symfony/http-client": "^7.0",
     "symfony/twig-bundle": "^7.0",
     "aws/aws-sdk-php": "^3.52",
-    "guzzlehttp/guzzle": "^7.0|^8.0"
+    "guzzlehttp/guzzle": "^7.0|^8.0",
+    "ramsey/uuid": "^4.9"
   },
   "require-dev": {
     "burdadirect/codestyle": "dev-main",
