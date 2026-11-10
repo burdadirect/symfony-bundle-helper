@@ -43,6 +43,11 @@ class ResultAissist extends BaseResult implements \ArrayAccess {
 
     /****************************************************************************/
 
+    public function getJsonRpcStatusMessage(): ?string
+    {
+        return $this['result']['status']['message']['parts'][0]['text'] ?? null;
+    }
+
     public function getStatusCode(mixed $default = null): mixed {
         return $this->getResponse()?->getStatusCode() ?? $default;
     }
