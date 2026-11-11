@@ -26,6 +26,20 @@ abstract class AbstractAissistService
     protected HttpClientInterface $apiClient;
     protected ?Total $total = null;
 
+    // Timeout settings.
+    protected int $timeoutHttp = 30;       // Normal API calls.
+    protected int $timeoutAgent = 300;     // An LLM run can take a while.
+    protected int $timeoutAssetReady = 60; // How long we wait for the upload to become usable:
+
+    // Retry settings.
+    protected int $retriesMax = 4;
+    protected array $retriesStatusCodes = [
+      Response::HTTP_TOO_MANY_REQUESTS   => true,
+      Response::HTTP_BAD_GATEWAY         => ['get', 'delete'],
+      Response::HTTP_SERVICE_UNAVAILABLE => ['get', 'delete'],
+      Response::HTTP_GATEWAY_TIMEOUT     => ['get', 'delete'],
+    ];
+
     public function __construct(
       protected readonly array $config,
       protected readonly SettingRepositoryInterface $settingRepositoryInterface,
@@ -63,9 +77,13 @@ abstract class AbstractAissistService
     }
 
     /**
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
      */
-    protected function request(string $method, string|array $url, array $options = [], ?Pinpoint $pinpoint = null): ResponseInterface {
+    protected function request(string $method, string|array $url, array $options = [], ?Pinpoint $pinpoint = null, int $retries = 0): ResponseInterface {
         $requestUrl = $totalUrl = $url;
         if (is_array($url)) {
             $requestUrl = vsprintf($url[0], $url[1]);
@@ -81,7 +99,25 @@ abstract class AbstractAissistService
 
         $this->logRequestToFile($method, $requestUrl, $options, $pinpoint);
 
-        return $this->getClient()->request($method, $requestUrl, $options);
+        $result = $this->getClient()->request($method, $requestUrl, $options);
+
+        // Retry request.
+        $retryMethods = $this->retriesStatusCodes[$result->getStatusCode()] ?? null;
+        if (($retryMethods === true) || (is_array($retryMethods) && in_array(strtolower($method), $retryMethods, true))) {
+            if ($retries < $this->retriesMax) {
+                $retries++;
+
+                $headers = $result->getHeaders(false);
+                $retryDelay = $headers['retry-after'][0] ?? ($retries * 2);
+                sleep($retryDelay);
+
+                $this->logRetryToFile($retries, $retryDelay, $pinpoint);
+
+                return $this->request($method, $url, $options, $pinpoint, $retries);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -183,11 +219,11 @@ abstract class AbstractAissistService
 
         $timestamp = new \DateTime()->format('Y-m-d H:i:s');
         $resource = fopen($filePath, 'ab');
-        fwrite($resource, sprintf('--- Response Start (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
+        fwrite($resource, sprintf('--- Response Start (%s) ---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, sprintf('Status Code: %s%s', $response->getStatusCode(), PHP_EOL));
         fwrite($resource, sprintf('Header: %s%s', json_encode($response->getHeaders(false), JSON_PRETTY_PRINT), PHP_EOL));
         fwrite($resource, sprintf('Body: %s%s', json_encode(json_decode($response->getContent(false), true), JSON_PRETTY_PRINT), PHP_EOL));
-        fwrite($resource, sprintf('--- Response End (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
+        fwrite($resource, sprintf('--- Response End (%s) ---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, PHP_EOL);
         fclose($resource);
     }
@@ -207,10 +243,27 @@ abstract class AbstractAissistService
 
         $timestamp = new \DateTime()->format('Y-m-d H:i:s');
         $resource = fopen($filePath, 'ab');
-        fwrite($resource, sprintf('--- Request Start (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
+        fwrite($resource, sprintf('--- Request Start (%s) ---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
         fwrite($resource, sprintf('Url: %s %s%s', strtoupper($method), $requestUrl, PHP_EOL));
         fwrite($resource, sprintf('Body: %s%s', json_encode($options, JSON_PRETTY_PRINT), PHP_EOL));
-        fwrite($resource, sprintf('--- Request End (%s)---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
+        fwrite($resource, sprintf('--- Request End (%s) ---: %s%s', $pinpoint?->locate(), $timestamp, PHP_EOL));
+        fwrite($resource, PHP_EOL);
+        fclose($resource);
+    }
+
+    protected function logRetryToFile(int $retryNum, float|int $retryDelay, ?Pinpoint $pinpoint = null, ?string $filePath = null): void
+    {
+        if (!$this->pb->get('kernel.debug')) {
+            return;
+        }
+
+        if ($filePath === null) {
+            $filePath = $this->pb->get('kernel.logs_dir') . '/aissist-service-requests.log';
+        }
+
+        $timestamp = new \DateTime()->format('Y-m-d H:i:s');
+        $resource = fopen($filePath, 'ab');
+        fwrite($resource, sprintf('--- Request Retry (%s) in %01.1fs (%s/%s) ---: %s%s', $pinpoint?->locate(), $retryDelay, $retryNum, $this->retriesMax, $timestamp, PHP_EOL));
         fwrite($resource, PHP_EOL);
         fclose($resource);
     }
