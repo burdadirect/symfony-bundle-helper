@@ -55,7 +55,7 @@ class AissistAgentService extends AbstractAissistService
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      */
-    public function sendMessageToTemplate(string $templateId, array $messageParts, string $agentName = 'general-purpose', bool $skipGlobalSystemPrompt = true): ResultAissist
+    public function sendMessageToTemplate(string $templateId, array $messageParts, string $agentName = 'general-purpose', bool $skipGlobalSystemPrompt = true, ?float $timeout = null): ResultAissist
     {
         $pinpoint = new Pinpoint(__CLASS__, __METHOD__);
 
@@ -79,7 +79,7 @@ class AissistAgentService extends AbstractAissistService
           ],
         ];
 
-        $response = $this->request('POST', ['/agents/%s/', [$agentName]], ['json' => $body], $pinpoint->setLine(__LINE__));
+        $response = $this->request('POST', ['/agents/%s/', [$agentName]], ['json' => $body, 'timeout' => $timeout], $pinpoint->setLine(__LINE__));
 
         return $this->handleResponse($response, [Response::HTTP_OK], $pinpoint->setLine(__LINE__));
     }
