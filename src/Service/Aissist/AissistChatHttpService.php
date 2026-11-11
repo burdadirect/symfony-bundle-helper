@@ -21,7 +21,7 @@ class AissistChatHttpService extends AbstractAissistChatService
 {
 
     /**
-     * @param message[] $messages
+     * @param list<message> $messages
      *
      * @throws RedirectionExceptionInterface
      * @throws DecodingExceptionInterface
