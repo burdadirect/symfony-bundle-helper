@@ -1,6 +1,6 @@
 <?php
 
-namespace HBM\HelperBundle\Traits\ServiceDependencies\Aissist;
+namespace HBM\HelperBundle\Traits\ServiceDependencies;
 
 use HBM\HelperBundle\Service\Aissist\AissistAgentService;
 use HBM\HelperBundle\Service\Aissist\AissistChatHttpService;
