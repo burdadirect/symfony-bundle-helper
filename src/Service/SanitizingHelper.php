@@ -41,7 +41,7 @@ class SanitizingHelper
 
         $mergedOptions = array_merge($defaultOptions, $options);
 
-        $htmlTidy = \tidy::repairString($html, $mergedOptions, 'UTF8') ?: '';
+        $htmlTidy = \tidy::repairString($html ?? '', $mergedOptions, 'UTF8') ?: '';
 
         return str_replace("\r\n", "\n", trim($htmlTidy));
     }
